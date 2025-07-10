@@ -1,198 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>phantekzy | Terminal Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0d0d0d;
-      --fg: #00ff00;
-      --bg-light: #f5f5f5;
-      --fg-light: #007700;
-    }
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
+      --bg: #000;
+      --fg: #33ff33;
+      --accent: #0f0;
     }
     body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
       background: var(--bg);
       color: var(--fg);
       font-family: 'Fira Code', monospace;
-      transition: background 0.3s, color 0.3s;
-    }
-    body.light {
-      background: var(--bg-light);
-      color: var(--fg-light);
+      display: flex;
+      flex-direction: column;
     }
     #terminal {
-      width: 100%;
-      height: 100%;
+      flex-grow: 1;
       padding: 20px;
-      background: #111;
-      white-space: pre-wrap;
       overflow-y: auto;
+      white-space: pre-wrap;
     }
-    .cursor {
-      display: inline-block;
-      width: 8px;
-      height: 16px;
-      margin-left: 2px;
-      background: currentColor;
-      animation: blink 0.7s steps(1) infinite, flicker 0.1s infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    @keyframes flicker {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.85; }
-    }
-    #controls {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 100;
+    #inputLine {
       display: flex;
-      gap: 8px;
     }
-    #controls button {
-      background: #222;
-      color: var(--fg);
+    #inputPrompt {
+      flex-shrink: 0;
+    }
+    #inputText {
+      background: transparent;
       border: none;
-      padding: 5px 10px;
-      font-family: 'Fira Code', monospace;
-      cursor: pointer;
-    }
-    body.light #controls button {
-      background: #ccc;
-      color: var(--fg-light);
+      color: var(--fg);
+      font: inherit;
+      outline: none;
+      width: 100%;
     }
   </style>
 </head>
 <body>
-  <div id="controls">
-    <button id="themeToggle">Toggle Theme</button>
-    <button id="skip">Skip</button>
-    <button id="speedDown">-</button>
-    <button id="speedUp">+</button>
-  </div>
-  <div id="terminal">
-    <div id="live" aria-live="polite" style="position:absolute; left:-9999px;"></div>
+  <div id="terminal"></div>
+  <div id="inputLine">
+    <span id="inputPrompt">[phantekzy@archlinux ~]$</span>&nbsp;
+    <input type="text" id="inputText" autofocus autocomplete="off">
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
-    const term = document.getElementById('terminal');
-    const live = document.getElementById('live');
-    let typeSpeed = 20;
-    let paused = false;
+    const terminal = document.getElementById('terminal');
+    const inputText = document.getElementById('inputText');
 
-    const art = `
-             __                          __             __                          
-       /\\ \\                        /\\ \\__         /\\ \\                         
- _____ \\ \\ \\___       __       ___ \\ \\ ,_\\     __ \\ \\ \\/'\\   ____    __  __    
-/\\ '__\`\\\\ \\  _ \`\\   /'__\`\\   /' _ \`\\\\ \\ \\/   /'__\`\\\\ \\ , <  /\\_ ,\`\\ /\\ \\/\\ \\   
-\\ \\ \\L\\ \\\\ \\ \\ \\ \\\\ /\\ \\L\\.\\_ /\\ \\/\\ \\\\ \\ \\_ /\\  __/ \\ \\ \\\\`\\\\/_/  /_\\ \\ \\_\\ \\  
- \\ \\ ,__/ \\ \\_\\ \\_\\\\ \\__/.\\_\\\\ \\_\\ \\_\\\\ \\__\\\\ \\____\\ \\ \\_\\ \\_\\/\\____\\\\/`____ \\ 
-  \\ \\ \\/   \\/_/\\/_/ \\/__/\\/_/ \\/_/\\/_/ \\/__/ \\/____/  \\/_/\\/_/\\/____/ `/___/> \\
-   \\ \\_\\                                                                 /\\___/
-    \\/_/                                                                 \\/__/
-`;
+    const commands = {
+      help: `Available commands:
+  help        Show this help message
+  skills      Show my dev stack
+  socials     Show social links
+  contact     Display contact info
+  resume      Download resume
+  clear       Clear terminal
+  exit        Exit session`,
 
-    const commands = [
-      '[phantekzy@archlinux ~]$ fastfetch',
-      art,
-      '[phantekzy@archlinux ~]$ cd ~/skills/dev_stack/',
-      '[phantekzy@archlinux dev_stack]$ ls -la',
-      '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 HTML5',
-      '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 CSS3',
-      '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 JavaScript',
-      '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 PHP',
-      '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 Node.js',
-      '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 React',
-      '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 MySQL',
-      '',
-      '[phantekzy@archlinux ~]$ cd ~/socials/',
-      '',
-      '[phantekzy@archlinux socials]$ curl -s linkedin.com/in/maini-lotfi | grep -i "Maini Lotfi"',
-      '[ OK ] Loaded LinkedIn profile',
-      '',
-      '[phantekzy@archlinux socials]$ curl -s x.com/mainilotfi | grep -i "Maini Lotfi"',
-      '[ OK ] X/Twitter feed found',
-      '',
-      '[phantekzy@archlinux socials]$ curl -s youtube.com/@phantekzy | grep -i "phantekzy"',
-      '[ OK ] YouTube channel detected',
-      '',
-      '[phantekzy@archlinux socials]$ mail -s "Contact" mainilotfi@gmail.com',
-      '[ INFO ] Opening email client...',
-      '',
-      '[phantekzy@archlinux ~]$ date',
-      () => new Date().toString(),
-      '',
-      '[phantekzy@archlinux ~]$ resume',
-      '[ DOWNLOAD ] Resume.pdf',
-      '',
-      '[phantekzy@archlinux ~]$ exit',
-      'logout',
-      '',
-      '███████████ Process terminated successfully.',
-      '',
-      'Thank you for visiting PHANTEKZY\'s Arch terminal'
-    ];
+      skills: `Dev Stack:
+  - HTML5
+  - CSS3
+  - JavaScript
+  - PHP
+  - Node.js
+  - React
+  - MySQL`,
 
-    // controls
-    document.getElementById('themeToggle').onclick = () => {
-      document.body.classList.toggle('light');
-    };
-    document.getElementById('skip').onclick = () => {
-      paused = true;
-      term.innerHTML += '<br><span class="cursor"></span>';
-    };
-    document.getElementById('speedUp').onclick = () => {
-      typeSpeed = Math.max(5, typeSpeed - 5);
-    };
-    document.getElementById('speedDown').onclick = () => {
-      typeSpeed += 5;
+      socials: `Socials:
+  - LinkedIn: linkedin.com/in/maini-lotfi
+  - Twitter: twitter.com/mainilotfi
+  - YouTube: youtube.com/@phantekzy`,
+
+      contact: `Email: mainilotfi@gmail.com`,
+
+      resume: `Downloading resume...`,
+
+      exit: `logout
+███████████ Process terminated successfully.`
     };
 
-    async function run() {
-      for (let cmd of commands) {
-        if (paused) return;
-
-        const div = document.createElement('div');
-        term.appendChild(div);
-        let text = typeof cmd === 'function' ? cmd() : cmd;
-        live.textContent = text;
-
-        if (text.includes('Resume.pdf')) {
+    function handleCommand(cmd) {
+      let output;
+      if (commands[cmd]) {
+        output = commands[cmd];
+        if (cmd === 'resume') {
           const a = document.createElement('a');
           a.href = 'Resume.pdf';
           a.download = 'Maini_Lotfi_Resume.pdf';
           a.click();
         }
-
-        await new Promise(r =>
-          new Typed(div, {
-            strings: [text],
-            typeSpeed,
-            showCursor: false,
-            onComplete: r
-          })
-        );
-        term.scrollTop = term.scrollHeight;
-        await new Promise(r => setTimeout(r, 100));
+      } else if (cmd === 'clear') {
+        terminal.innerHTML = '';
+        return;
+      } else {
+        output = `command not found: ${cmd}`;
       }
 
-      const cursor = document.createElement('span');
-      cursor.className = 'cursor';
-      term.appendChild(cursor);
+      const div = document.createElement('div');
+      div.textContent = `[phantekzy@archlinux ~]$ ${cmd}\n${output}`;
+      terminal.appendChild(div);
+      terminal.scrollTop = terminal.scrollHeight;
     }
 
-    run();
+    inputText.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const cmd = inputText.value.trim();
+        handleCommand(cmd);
+        inputText.value = '';
+      }
+    });
   </script>
 </body>
 </html>
