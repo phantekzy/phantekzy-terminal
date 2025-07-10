@@ -17,7 +17,7 @@
 
     #terminal {
       white-space: pre-wrap;
-      line-height: 1.5;
+      line-height: 1.4;
       font-size: 14px;
     }
 
@@ -67,34 +67,34 @@
 
     const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-    // Function to type each line one by one using Typed.js
     async function typeLines(lines, container, typeSpeed = 10) {
-      for (const line of lines) {
-        await new Promise(resolve => {
-          const span = document.createElement("span");
-          container.appendChild(span);
-          container.appendChild(document.createElement("br"));
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const lineContainer = document.createElement("div");
+        container.appendChild(lineContainer);
 
-          new Typed(span, {
+        await new Promise(resolve => {
+          new Typed(lineContainer, {
             strings: [line],
-            typeSpeed,
-            showCursor: true,
+            typeSpeed: typeSpeed,
+            showCursor: i === lines.length - 1, // show cursor only on last line
             cursorChar: "_",
-            onComplete: () => {
-              span.classList.remove("typed-cursor");
-              resolve();
-            }
+            onComplete: () => resolve()
           });
         });
-        await delay(100); // pause between lines
+
+        await delay(50);
       }
     }
 
     async function startTyping() {
       await typeLines(fastfetchLines, terminal, 10);
+
+      // Then load readme.txt
       const response = await fetch("readme.txt");
       const text = await response.text();
       const readmeLines = text.split("\n");
+
       await typeLines(readmeLines, terminal, 10);
     }
 
