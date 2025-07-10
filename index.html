@@ -38,6 +38,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
+    const terminal = document.getElementById("terminal");
+
     const fastfetchLines = [
       "[phantekzy@archlinux ~]$ fastfetch",
       "",
@@ -59,34 +61,41 @@
       "   `/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering for Code",
       "  `+sso+:-`                 `.-/+oso:   Motto     : \"Learn. Build. Play Dark Souls. Repeat.\"",
       " `++:.                           `-/+/   ",
-      " .`                                  ",
-      "",
+      " .`                                 ",
+      ""
     ];
 
-    const terminalElement = document.getElementById("terminal");
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-    function typeLines(lines, onComplete) {
-      new Typed(terminalElement, {
-        strings: lines,
-        typeSpeed: 12,
-        startDelay: 300,
-        showCursor: true,
-        cursorChar: "_",
-        smartBackspace: false,
-        loop: false,
-        onComplete: onComplete
-      });
+    // Function to type each line one by one using Typed.js
+    async function typeLines(lines, container, typeSpeed = 10) {
+      for (const line of lines) {
+        await new Promise(resolve => {
+          const span = document.createElement("span");
+          container.appendChild(span);
+          container.appendChild(document.createElement("br"));
+
+          new Typed(span, {
+            strings: [line],
+            typeSpeed,
+            showCursor: true,
+            cursorChar: "_",
+            onComplete: () => {
+              span.classList.remove("typed-cursor");
+              resolve();
+            }
+          });
+        });
+        await delay(100); // pause between lines
+      }
     }
 
-    function startTyping() {
-      typeLines(fastfetchLines, () => {
-        fetch("readme.txt")
-          .then(response => response.text())
-          .then(text => {
-            const lines = text.split("\n");
-            typeLines(lines);
-          });
-      });
+    async function startTyping() {
+      await typeLines(fastfetchLines, terminal, 10);
+      const response = await fetch("readme.txt");
+      const text = await response.text();
+      const readmeLines = text.split("\n");
+      await typeLines(readmeLines, terminal, 10);
     }
 
     startTyping();
