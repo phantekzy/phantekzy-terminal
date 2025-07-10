@@ -16,10 +16,9 @@
     }
 
     #terminal {
-      white-space: pre; /* key fix for ASCII art */
-      font-size: 14px;
-      line-height: 1.2;
-      letter-spacing: normal;
+      white-space: pre; /* exact spacing */
+      font-size: 16px;
+      line-height: 1.4;
     }
 
     .typed-cursor {
@@ -44,8 +43,7 @@
       .then(text => {
         new Typed("#terminal", {
           strings: [text],
-          typeSpeed: 10,     // smooth & readable
-          startDelay: 300,
+          typeSpeed: 10,
           showCursor: true,
           cursorChar: "_",
           smartBackspace: false,
