@@ -15,44 +15,48 @@
 </head>
 <body>
   <div id="terminal">
+    <!-- Static ASCII header -->
     <pre>
          __                          __             __                          
        /\ \                        /\ \__         /\ \                         
- _____ \ \ \___       __       ___ \ \ ,_\     __ \ \ \/'\   ____    __  __    
+ _____ \ \ \___       __       ___ \ \ ,_\     __ \ \ \'/   ____    __  __    
 /\ '__`\\ \  _ `\   /'__`\   /' _ `\\ \ \/   /'__`\\ \ , <  /\_ ,`\ /\ \/\ \   
-\ \ \L\ \\ \ \ \ \ /\ \L\.\_ /\ \/\ \\ \ \_ /\  __/ \ \ \\`\\/_/  /_\ \ \_\ \  
- \ \ ,__/ \ \_\ \_\\ \__/.\_\\ \_\ \_\\ \__\\ \____\ \ \_\ \_\/\____\\/`____ \ 
-  \ \ \/   \/_/\/_/ \/__/\/_/ \/_/\/_/ \/__/ \/____/  \/_/\/_/\/____/ `/___/> \
+\ \ \L\ \\ \ \ \ \/\ \L\.
+_ /\ \/\ \\ \ \_ /\  __/ \ \ \\\'\\/_/  /_\ \ \_\ \  
+ \ \ ,__/ \ \_\ \_\\ \__/.
+_\\ \_\ \_\\ \__\\ \____\ \ \_\ \_\/\____\\/`____ \ 
+  \ \ \/   \/_/\/_/ \/__/\/_/ \/_/\/_/ \/__/ \/____/  \/_/\/\_/\/____/ `/___/> \
    \ \_\                                                                 /\___/
-    \/_/  
-
-[phantekzy@archlinux ~]$ fastfetch
-
-                   -`                   phantekzy@archlinux
-                  .o+`                  -------------------------------
-                 `ooo/                  Full Name : Maini Lotfi Abdelkader
-                `+oooo:                 Alias     : phantekzy
-               `+oooooo:                Location  : Bir Mourad Raïs, Algiers, Algeria
-               -+oooooo+:               Age       : 28 (born 1996-09-08)
-             `/:-:++oooo+:              Role      : Elden Lord + Web Dev + CyberSec
-            `/++++/+++++++:             Status    : Currently exploring ArchLinux
-           `/++++++++++++++:            WM        : Hyprland 
-          `/+++ooooooooooooo/`          Shell     : Zsh + Starship
-         ./ooosssso++osssssso+`         Editor    : Neovim (Lua)
-        .oossssso-````/ossssss+`        Terminal  : Alacritty
-       -osssssso.      :ssssssso.       Browser   : Firefox / W3M
-      :osssssss/        osssso+++.      Theme     : NerdFont + Gruvbox Dark
-     /ossssssss/        +ssssooo/-      Hobby     : AI, Linux, low-level code
-   `/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering for Code 
-  `+sso+:-`                 `.-/+oso:   Motto     : "Learn. Build. Play Dark Souls. Repeat."
- `++:.                           `-/+/   
- .`                                 
-
+    \/_/                                                                 \/__/
     </pre>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
     const terminal = document.getElementById('terminal');
+
+    const fastfetchCmd = '[phantekzy@archlinux ~]$ fastfetch';
+    const fastfetchArt = `
+
+                   -\`                   phantekzy@archlinux
+                  .o+`                  -------------------------------
+                 \`ooo/                  Full Name : Maini Lotfi Abdelkader
+                \`+oooo:                 Alias     : phantekzy
+               \`+oooooo:                Location  : Bir Mourad Raïs, Algiers, Algeria
+               -+oooooo+:               Age       : 28 (born 1996-09-08)
+             \`/:-:++oooo+:              Role      : Elden Lord + Web Dev + CyberSec
+            \`/++++/+++++++:             Status    : Currently exploring ArchLinux
+           \`/++++++++++++++:            WM        : Hyprland 
+          \`/+++ooooooooooooo/`          Shell     : Zsh + Starship
+         ./ooosssso++osssssso+`         Editor    : Neovim (Lua)
+        .oossssso-````/ossssss+`        Terminal  : Alacritty
+       -osssssso.      :ssssssso.       Browser   : Firefox / W3M
+      :osssssss/        osssso+++.      Theme     : NerdFont + Gruvbox Dark
+     /ossssssss/        +ssssooo/-      Hobby     : AI, Linux, low-level code
+   \`/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering for Code 
+  \`+sso+:-\`                 \`.-/+oso:   Motto     : "Learn. Build. Play Dark Souls. Repeat."
+ \`++:.                           \`-/+/   
+ .\`                                 
+`;
     const commands = [
       '[phantekzy@archlinux ~]$ cd ~/skills/dev_stack/',
       '',
@@ -86,14 +90,30 @@
       '',
       'Thank you for visiting PHANTEKZY\'s Arch terminal'
     ];
+
     async function run() {
+      // animate fastfetch command only
+      let div = document.createElement('div');
+      terminal.appendChild(div);
+      await new Promise(res => new Typed(div, { strings: [fastfetchCmd], typeSpeed: 20, showCursor: false, onComplete: res }));
+      terminal.scrollTop = terminal.scrollHeight;
+      await new Promise(r => setTimeout(r, 200));
+
+      // insert static fastfetch art
+      terminal.insertAdjacentHTML('beforeend', `<pre>${fastfetchArt}</pre>`);
+      terminal.scrollTop = terminal.scrollHeight;
+      await new Promise(r => setTimeout(r, 200));
+
+      // animate remaining commands
       for (let cmd of commands) {
-        const div = document.createElement('div');
+        div = document.createElement('div');
         terminal.appendChild(div);
         await new Promise(res => new Typed(div, { strings: [cmd], typeSpeed: 20, showCursor: false, onComplete: res }));
         terminal.scrollTop = terminal.scrollHeight;
         await new Promise(r => setTimeout(r, 100));
       }
+
+      // add blinking cursor
       const cursor = document.createElement('span'); cursor.className = 'cursor'; terminal.lastChild.appendChild(cursor);
     }
     run();
