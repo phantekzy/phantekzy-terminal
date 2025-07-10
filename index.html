@@ -15,15 +15,6 @@
       overflow-y: auto;
     }
 
-    #ascii-container {
-      display: flex;
-      white-space: pre;
-      gap: 40px;
-      font-size: 14px;
-      line-height: 1.3;
-      margin-bottom: 30px;
-    }
-
     #terminal {
       white-space: pre-wrap;
       line-height: 1.5;
@@ -43,72 +34,62 @@
 </head>
 <body>
 
-  <!-- Static Arch Logo + Info -->
-  <div id="ascii-container">
-    <div id="logo">
-      <pre>
-                   -`                   
-                  .o+`                  
-                 `ooo/                  
-                `+oooo:                 
-               `+oooooo:                
-               -+oooooo+:               
-             `/:-:++oooo+:              
-            `/++++/+++++++:             
-           `/++++++++++++++:            
-          `/+++ooooooooooooo/`          
-         ./ooosssso++osssssso+`         
-        .oossssso-````/ossssss+`        
-       -osssssso.      :ssssssso.       
-      :osssssss/        osssso+++.      
-     /ossssssss/        +ssssooo/-      
-   `/ossssso+/:-        -:/+osssso+-    
-  `+sso+:-`                 `.-/+oso:    
- `++:.                           `-/+/   
- .`                                      
-      </pre>
-    </div>
-    <div id="info">
-      <pre>
-phantekzy@archlinux
--------------------------------
-Full Name : Maini Lotfi Abdelkader
-Alias     : phantekzy
-Location  : Bir Mourad Raïs, Algiers, Algeria
-Age       : 28 (born 1996-09-08)
-Role      : Elden Lord + Web Dev + CyberSec
-Status    : Currently exploring ArchLinux
-WM        : Hyprland 
-Shell     : Zsh + Starship
-Editor    : Neovim (Lua)
-Terminal  : Alacritty
-Browser   : Firefox / W3M
-Theme     : NerdFont + Gruvbox Dark
-Hobby     : AI, Linux, low-level code
-Fun Fact  : Dropped Civil Engineering for Code 
-Motto     : "Learn. Build. Play Dark Souls. Repeat."
-      </pre>
-    </div>
-  </div>
-
-  <!-- Typing animation appears here -->
   <div id="terminal"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
-    fetch("readme.txt")
-      .then(response => response.text())
-      .then(text => {
-        new Typed("#terminal", {
-          strings: [text],
-          typeSpeed: 12,
-          startDelay: 300,
-          showCursor: true,
-          cursorChar: "_",
-          smartBackspace: false,
-          loop: false
-        });
+    const fastfetchLines = [
+      "[phantekzy@archlinux ~]$ fastfetch",
+      "",
+      "                   -`                   phantekzy@archlinux",
+      "                  .o+`                  -------------------------------",
+      "                 `ooo/                  Full Name : Maini Lotfi Abdelkader",
+      "                `+oooo:                 Alias     : phantekzy",
+      "               `+oooooo:                Location  : Bir Mourad Raïs, Algiers, Algeria",
+      "               -+oooooo+:               Age       : 28 (born 1996-09-08)",
+      "             `/:-:++oooo+:              Role      : Elden Lord + Web Dev + CyberSec",
+      "            `/++++/+++++++:             Status    : Currently exploring ArchLinux",
+      "           `/++++++++++++++:            WM        : Hyprland ",
+      "          `/+++ooooooooooooo/`          Shell     : Zsh + Starship",
+      "         ./ooosssso++osssssso+`         Editor    : Neovim (Lua)",
+      "        .oossssso-````/ossssss+`        Terminal  : Alacritty",
+      "       -osssssso.      :ssssssso.       Browser   : Firefox / W3M",
+      "      :osssssss/        osssso+++.      Theme     : NerdFont + Gruvbox Dark",
+      "     /ossssssss/        +ssssooo/-      Hobby     : AI, Linux, low-level code",
+      "   `/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering for Code",
+      "  `+sso+:-`                 `.-/+oso:   Motto     : \"Learn. Build. Play Dark Souls. Repeat.\"",
+      " `++:.                           `-/+/   ",
+      " .`                                  ",
+      "",
+    ];
+
+    const terminalElement = document.getElementById("terminal");
+
+    function typeLines(lines, onComplete) {
+      new Typed(terminalElement, {
+        strings: lines,
+        typeSpeed: 12,
+        startDelay: 300,
+        showCursor: true,
+        cursorChar: "_",
+        smartBackspace: false,
+        loop: false,
+        onComplete: onComplete
       });
+    }
+
+    function startTyping() {
+      typeLines(fastfetchLines, () => {
+        fetch("readme.txt")
+          .then(response => response.text())
+          .then(text => {
+            const lines = text.split("\n");
+            typeLines(lines);
+          });
+      });
+    }
+
+    startTyping();
   </script>
 </body>
 </html>
