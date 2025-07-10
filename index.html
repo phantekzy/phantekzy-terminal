@@ -2,15 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>phantekzy | Terminal Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet"/>
   <style>
     html, body { height: 100%; margin: 0; padding: 0; }
-    body { background: #0d0d0d; color: #00ff00; font-family: 'Fira Code', monospace; }
-    #terminal { width: 100%; height: 100%; padding: 30px; background: #111; white-space: pre; overflow-y: auto; }
-    .cursor { display: inline-block; width: 8px; margin-left: 2px; background: #00ff00; animation: blink 0.7s steps(1) infinite; vertical-align: bottom; }
-    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+    body {
+      background: #0d0d0d;
+      color: #00ff00;
+      font-family: 'Fira Code', monospace;
+    }
+    #terminal {
+      width: 100%;
+      height: 100%;
+      padding: 30px;
+      background: #111;
+      white-space: pre;
+      overflow-y: auto;
+    }
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      margin-left: 2px;
+      background: #00ff00;
+      animation: blink 0.7s steps(1) infinite;
+      vertical-align: bottom;
+    }
+    @keyframes blink {
+      0%,100% { opacity:1; }
+      50% { opacity:0; }
+    }
   </style>
 </head>
 <body>
@@ -27,6 +48,7 @@
     \/_/                                                                 \/__/ 
     </pre>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
     const term = document.getElementById('terminal');
@@ -41,7 +63,7 @@
              \`/:-:++oooo+:              Role      : Elden Lord + Web Dev + CyberSec
             \`/++++/+++++++:             Status    : Currently exploring ArchLinux
            \`/++++++++++++++:            WM        : Hyprland 
-          \`/+++ooooooooooooo/\`          Shell     : Zsh + Starship
+          \`/+++ooooooooooooo/\\\`         Shell     : Zsh + Starship
          ./ooosssso++osssssso+\`         Editor    : Neovim (Lua)
         .oossssso-\`\`\`\`/ossssss+\`        Terminal  : Alacritty
        -osssssso.      :ssssssso.       Browser   : Firefox / W3M
@@ -54,62 +76,58 @@
 `;
 
     const postFilesCommands = [
-  '[phantekzy@archlinux ~]$ cd ~/socials/',
-  '',
+      '[phantekzy@archlinux ~]$ cd ~/socials/',
+      '',
 
-  '[phantekzy@archlinux socials]$ curl -s linkedin.com/in/maini-lotfi | grep -i "Maini Lotfi"',
-  '[ OK ] Loaded LinkedIn profile',
-  '',
+      '[phantekzy@archlinux socials]$ curl -s linkedin.com/in/maini-lotfi | grep -i "Maini Lotfi"',
+      '[ OK ] Loaded LinkedIn profile',
+      '',
 
-  '[phantekzy@archlinux socials]$ curl -s x.com/mainilotfi | grep -i "Maini Lotfi"',
-  '[ OK ] X/Twitter feed found',
-  '',
+      '[phantekzy@archlinux socials]$ curl -s x.com/mainilotfi | grep -i "Maini Lotfi"',
+      '[ OK ] X/Twitter feed found',
+      '',
 
-  '[phantekzy@archlinux socials]$ curl -s youtube.com/@phantekzy | grep -i "phantekzy"',
-  '[ OK ] YouTube channel detected',
-  '',
+      '[phantekzy@archlinux socials]$ curl -s youtube.com/@phantekzy | grep -i "phantekzy"',
+      '[ OK ] YouTube channel detected',
+      '',
 
-  '[phantekzy@archlinux socials]$ mail -s "Contact" mainilotfi@gmail.com',
-  '[ INFO ] Opening email client...',
-  '',
+      '[phantekzy@archlinux socials]$ mail -s "Contact" mainilotfi@gmail.com',
+      '[ INFO ] Opening email client...',
+      '',
 
-  '[phantekzy@archlinux ~]$ uname -a',
-  'Linux archlinux 6.9.6-arch1-1 x86_64 GNU/Linux',
-  '',
+      '[phantekzy@archlinux ~]$ uname -a',
+      'Linux archlinux 6.9.6-arch1-1 x86_64 GNU/Linux',
+      '',
 
-  '[phantekzy@archlinux ~]$ exit',
-  'logout',
-  '',
+      '[phantekzy@archlinux ~]$ exit',
+      'logout',
+      '',
 
-  '███████████ Process terminated successfully.',
-  '',
+      '███████████ Process terminated successfully.',
+      '',
 
-  'Thank you for visiting PHANTEKZY\'s Arch terminal'
-];
-
+      'Thank you for visiting PHANTEKZY\'s Arch terminal'
+    ];
 
     async function run() {
-      const typeSpeed = 5;
-      const shortWait = 30;
-
       let d = document.createElement('div'); term.appendChild(d);
-      await new Promise(r => new Typed(d, { strings: [fastfetchCmd], typeSpeed, showCursor: false, onComplete: r }));
+      await new Promise(r => new Typed(d, { strings: [fastfetchCmd], typeSpeed: 20, showCursor: false, onComplete: r }));
       term.scrollTop = term.scrollHeight;
-      await new Promise(r => setTimeout(r, shortWait));
+      await new Promise(r => setTimeout(r, 200));
 
       term.insertAdjacentHTML('beforeend', `<pre>${fastfetchArt}</pre>`);
       term.scrollTop = term.scrollHeight;
-      await new Promise(r => setTimeout(r, shortWait));
+      await new Promise(r => setTimeout(r, 200));
 
       d = document.createElement('div'); term.appendChild(d);
-      await new Promise(r => new Typed(d, { strings: ['[phantekzy@archlinux ~]$ cd ~/skills/dev_stack/'], typeSpeed, showCursor: false, onComplete: r }));
+      await new Promise(r => new Typed(d, { strings: ['[phantekzy@archlinux ~]$ cd ~/skills/dev_stack/'], typeSpeed: 20, showCursor: false, onComplete: r }));
       term.scrollTop = term.scrollHeight;
-      await new Promise(r => setTimeout(r, shortWait));
+      await new Promise(r => setTimeout(r, 100));
 
       d = document.createElement('div'); term.appendChild(d);
-      await new Promise(r => new Typed(d, { strings: ['[phantekzy@archlinux dev_stack]$ ls -la'], typeSpeed, showCursor: false, onComplete: r }));
+      await new Promise(r => new Typed(d, { strings: ['[phantekzy@archlinux dev_stack]$ ls -la'], typeSpeed: 20, showCursor: false, onComplete: r }));
       term.scrollTop = term.scrollHeight;
-      await new Promise(r => setTimeout(r, shortWait));
+      await new Promise(r => setTimeout(r, 100));
 
       const files = [
         '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 HTML5',
@@ -122,16 +140,31 @@
       ];
       term.insertAdjacentHTML('beforeend', `<pre>${files.join('\n')}</pre>`);
       term.scrollTop = term.scrollHeight;
-      await new Promise(r => setTimeout(r, shortWait));
+      await new Promise(r => setTimeout(r, 200));
 
       for (let cmd of postFilesCommands) {
-        d = document.createElement('div'); term.appendChild(d);
-        await new Promise(r => new Typed(d, { strings: [cmd], typeSpeed, showCursor: false, onComplete: r }));
+        if (cmd.trim() === '') {
+          const br = document.createElement('br');
+          term.appendChild(br);
+        } else {
+          const d = document.createElement('div');
+          term.appendChild(d);
+          await new Promise(r =>
+            new Typed(d, {
+              strings: [cmd],
+              typeSpeed: 20,
+              showCursor: false,
+              onComplete: r
+            })
+          );
+        }
         term.scrollTop = term.scrollHeight;
-        await new Promise(r => setTimeout(r, shortWait));
+        await new Promise(r => setTimeout(r, 100));
       }
 
-      const cursor = document.createElement('span'); cursor.className = 'cursor'; term.lastChild.appendChild(cursor);
+      const cursor = document.createElement('span');
+      cursor.className = 'cursor';
+      term.lastChild.appendChild(cursor);
     }
 
     run();
