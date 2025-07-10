@@ -7,8 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background-color: #0d0d0d; color: #00ff00; font-family: 'Fira Code', monospace; line-height: 1.4; overflow: hidden; }
-    #terminal { width: 90vw; max-width: 800px; height: 90vh; margin: 4vh auto; padding: 20px; background: #111; border-radius: 8px; box-shadow: 0 0 20px rgba(0,255,0,0.2); overflow-y: auto; white-space: pre; position: relative; }
+    body { background-color: #0d0d0d; color: #00ff00; font-family: 'Fira Code', monospace; overflow: hidden; }
+    /* Expand terminal to full viewport */
+    #terminal { width: 100vw; height: 100vh; padding: 40px; background: #111; white-space: pre; overflow-y: auto; }
     .cursor { display: inline-block; width: 8px; margin-left: 2px; background: #00ff00; animation: blink 0.7s steps(1) infinite; vertical-align: bottom; }
     @keyframes blink { 0%,100%{opacity:1;}50%{opacity:0;} }
   </style>
@@ -33,12 +34,10 @@ _\\ \_\ \_\\ \__\\ \____\ \ \_\ \_\/\____\\/`____ \
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
     const terminal = document.getElementById('terminal');
-
     const fastfetchCmd = '[phantekzy@archlinux ~]$ fastfetch';
     const fastfetchArt = `
-
-                   -\`                   phantekzy@archlinux
-                  .o+`                  -------------------------------
+              -\`                   phantekzy@archlinux
+                  .o+\`                  -------------------------------
                  \`ooo/                  Full Name : Maini Lotfi Abdelkader
                 \`+oooo:                 Alias     : phantekzy
                \`+oooooo:                Location  : Bir Mourad Raïs, Algiers, Algeria
@@ -46,16 +45,16 @@ _\\ \_\ \_\\ \__\\ \____\ \ \_\ \_\/\____\\/`____ \
              \`/:-:++oooo+:              Role      : Elden Lord + Web Dev + CyberSec
             \`/++++/+++++++:             Status    : Currently exploring ArchLinux
            \`/++++++++++++++:            WM        : Hyprland 
-          \`/+++ooooooooooooo/`          Shell     : Zsh + Starship
-         ./ooosssso++osssssso+`         Editor    : Neovim (Lua)
-        .oossssso-````/ossssss+`        Terminal  : Alacritty
+          \`/+++ooooooooooooo/\`          Shell     : Zsh + Starship
+         ./ooosssso++osssssso+\`         Editor    : Neovim (Lua)
+        .oossssso-\`\`\`\`/ossssss+\`        Terminal  : Alacritty
        -osssssso.      :ssssssso.       Browser   : Firefox / W3M
       :osssssss/        osssso+++.      Theme     : NerdFont + Gruvbox Dark
      /ossssssss/        +ssssooo/-      Hobby     : AI, Linux, low-level code
    \`/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering for Code 
   \`+sso+:-\`                 \`.-/+oso:   Motto     : "Learn. Build. Play Dark Souls. Repeat."
- \`++:.                           \`-/+/   
- .\`                                 
+ \`++:.                           \`-/+/
+ .\`    
 `;
     const commands = [
       '[phantekzy@archlinux ~]$ cd ~/skills/dev_stack/',
@@ -90,30 +89,24 @@ _\\ \_\ \_\\ \__\\ \____\ \ \_\ \_\/\____\\/`____ \
       '',
       'Thank you for visiting PHANTEKZY\'s Arch terminal'
     ];
-
     async function run() {
-      // animate fastfetch command only
-      let div = document.createElement('div');
-      terminal.appendChild(div);
+      // animate fastfetch command
+      let div = document.createElement('div'); terminal.appendChild(div);
       await new Promise(res => new Typed(div, { strings: [fastfetchCmd], typeSpeed: 20, showCursor: false, onComplete: res }));
       terminal.scrollTop = terminal.scrollHeight;
       await new Promise(r => setTimeout(r, 200));
-
-      // insert static fastfetch art
+      // show fastfetch art without animation
       terminal.insertAdjacentHTML('beforeend', `<pre>${fastfetchArt}</pre>`);
       terminal.scrollTop = terminal.scrollHeight;
       await new Promise(r => setTimeout(r, 200));
-
-      // animate remaining commands
+      // animate rest
       for (let cmd of commands) {
-        div = document.createElement('div');
-        terminal.appendChild(div);
+        div = document.createElement('div'); terminal.appendChild(div);
         await new Promise(res => new Typed(div, { strings: [cmd], typeSpeed: 20, showCursor: false, onComplete: res }));
         terminal.scrollTop = terminal.scrollHeight;
         await new Promise(r => setTimeout(r, 100));
       }
-
-      // add blinking cursor
+      // blinking cursor
       const cursor = document.createElement('span'); cursor.className = 'cursor'; terminal.lastChild.appendChild(cursor);
     }
     run();
