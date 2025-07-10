@@ -10,17 +10,15 @@
       margin: 0;
       background-color: #0d0d0d;
       color: #00ff00;
-      font-family: 'Fira Code', 'Courier New', monospace;
+      font-family: 'Fira Code', monospace;
       padding: 20px;
-      white-space: pre-wrap;
       overflow-y: scroll;
     }
 
     #terminal {
+      line-height: 1.6;
+      letter-spacing: 0.5px;
       font-size: 14px;
-      white-space: pre-wrap;
-      line-height: 1.6;          /* More vertical breathing room */
-      letter-spacing: 0.5px;     /* Better horizontal spacing */
     }
 
     .typed-cursor {
@@ -36,24 +34,24 @@
 </head>
 <body>
 
-  <pre id="terminal"></pre>
+  <div id="terminal"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-<script>
-  fetch("readme.txt")
-    .then(response => response.text())
-    .then(text => {
-      // Wrap the entire readme content as one string (with \n preserved)
-      new Typed("#terminal", {
-        strings: [text],
-        typeSpeed: 5,
-        startDelay: 200,
-        smartBackspace: false,
-        showCursor: true,
-        cursorChar: "_",
-        loop: false
+  <script>
+    fetch("readme.txt")
+      .then(response => response.text())
+      .then(text => {
+        const processedText = text.replace(/\n/g, "<br>");
+        new Typed("#terminal", {
+          strings: [processedText],
+          typeSpeed: 5,
+          startDelay: 200,
+          smartBackspace: false,
+          showCursor: true,
+          cursorChar: "_",
+          loop: false
+        });
       });
-    });
-</script>
+  </script>
 </body>
 </html>
