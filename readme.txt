@@ -1,59 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>phantekzy | Terminal Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      background-color: #0d0d0d;
-      color: #00ff00;
-      font-family: 'Fira Code', monospace;
-      padding: 20px;
-      white-space: pre-wrap;
-      overflow-y: scroll;
-    }
+        __                          __             __                          
+       /\ \                        /\ \__         /\ \                         
+ _____ \ \ \___       __       ___ \ \ ,_\     __ \ \ \/'\   ____    __  __    
+/\ '__`\\ \  _ `\   /'__`\   /' _ `\\ \ \/   /'__`\\ \ , <  /\_ ,`\ /\ \/\ \   
+\ \ \L\ \\ \ \ \ \ /\ \L\.\_ /\ \/\ \\ \ \_ /\  __/ \ \ \\`\\/_/  /_\ \ \_\ \  
+ \ \ ,__/ \ \_\ \_\\ \__/.\_\\ \_\ \_\\ \__\\ \____\ \ \_\ \_\/\____\\/`____ \ 
+  \ \ \/   \/_/\/_/ \/__/\/_/ \/_/\/_/ \/__/ \/____/  \/_/\/_/\/____/ `/___/> \
+   \ \_\                                                                 /\___/
+    \/_/                                                                 \/__/ 
 
-    #terminal {
-      white-space: pre-wrap;
-      line-height: 1.5;
-    }
+[phantekzy@archlinux ~]$ fastfetch
 
-    .typed-cursor {
-      font-weight: bold;
-      animation: blink 1s infinite;
-    }
+                   -`                   phantekzy@archlinux
+                  .o+`                  -------------------------------
+                 `ooo/                  Full Name : Maini Lotfi Abdelkader
+                `+oooo:                 Alias     : phantekzy
+               `+oooooo:                Location  : Bir Mourad Raïs, Algiers, Algeria
+               -+oooooo+:               Age       : 28 (born 1996-09-08)
+             `/:-:++oooo+:              Role      : Elden Lord + Web Dev + CyberSec
+            `/++++/+++++++:             Status    : Currently exploring ArchLinux
+           `/++++++++++++++:            WM        : Hyprland 
+          `/+++ooooooooooooo/`          Shell     : Zsh + Starship
+         ./ooosssso++osssssso+`         Editor    : Neovim (Lua)
+        .oossssso-````/ossssss+`        Terminal  : Alacritty
+       -osssssso.      :ssssssso.       Browser   : Firefox / W3M
+      :osssssss/        osssso+++.      Theme     : NerdFont + Gruvbox Dark
+     /ossssssss/        +ssssooo/-      Hobby     : AI, Linux, low-level code
+   `/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering for Code 
+  `+sso+:-`                 `.-/+oso:   Motto     : "Learn. Build. Play Dark Souls. Repeat."
+ `++:.                           `-/+/   
+ .`                                 `
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-  </style>
-</head>
-<body>
 
-  <div id="terminal"></div>
+[phantekzy@archlinux ~]$ cd ~/skills/dev_stack/
 
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  <script>
-   fetch("readme.txt")
-  .then(response => response.text())
-  .then(text => {
-    const lines = text.split("\n");
-    new Typed("#terminal", {
-      strings: lines,
-      typeSpeed: 5,          // faster typing speed (lower = faster)
-      startDelay: 200,       // small delay before starting
-      backSpeed: 0,          // not used, but keep clean
-      smartBackspace: false,
-      showCursor: true,
-      cursorChar: "_",
-      loop: false
-    });
-  });
-  </script>
-</body>
-</html>
+[phantekzy@archlinux dev_stack]$ ls -la
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 HTML5
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 CSS3
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 JavaScript
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 PHP
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 Node.js
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 React
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 MySQL
 
+[phantekzy@archlinux ~]$ cd ~/socials/
+
+[phantekzy@archlinux socials]$ curl -s linkedin.com/in/maini-lotfi | grep -i "Maini Lotfi"
+[ OK ] Loaded LinkedIn profile 
+
+[phantekzy@archlinux socials]$ curl -s x.com/mainilotfi | grep -i "Maini Lotfi"
+[ OK ] X/Twitter feed found 
+
+[phantekzy@archlinux socials]$ curl -s youtube.com/@phantekzy | grep -i "phantekzy"
+[ OK ] YouTube channel detected 
+
+[phantekzy@archlinux socials]$ mail -s "Contact" mainilotfi@gmail.com
+[ INFO ] Opening email client... 
+
+[phantekzy@archlinux ~]$ uname -a
+Linux archlinux 6.9.6-arch1-1 x86_64 GNU/Linux
+
+[phantekzy@archlinux ~]$ exit
+
+logout
+
+███████████ Process terminated successfully.
+
+Thank you for visiting PHANTEKZY's Arch terminal 
