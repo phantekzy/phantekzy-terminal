@@ -16,7 +16,7 @@
     }
 
     #terminal {
-      white-space: pre-wrap;
+      white-space: pre;
       line-height: 1.4;
       font-size: 14px;
     }
@@ -34,50 +34,52 @@
 </head>
 <body>
 
-  <div id="terminal"></div>
+  <div id="terminal">
+[phantekzy@archlinux ~]$ fastfetch
+
+                   -`                   phantekzy@archlinux
+                  .o+`                  -------------------------------
+                 `ooo/                  Full Name : Maini Lotfi Abdelkader
+                `+oooo:                 Alias     : phantekzy
+               `+oooooo:                Location  : Bir Mourad Raïs, Algiers, Algeria
+               -+oooooo+:               Age       : 28 (born 1996-09-08)
+             `/:-:++oooo+:              Role      : Elden Lord + Web Dev + CyberSec
+            `/++++/+++++++:             Status    : Currently exploring ArchLinux
+           `/++++++++++++++:            WM        : Hyprland 
+          `/+++ooooooooooooo/`          Shell     : Zsh + Starship
+         ./ooosssso++osssssso+`         Editor    : Neovim (Lua)
+        .oossssso-````/ossssss+`        Terminal  : Alacritty
+       -osssssso.      :ssssssso.       Browser   : Firefox / W3M
+      :osssssss/        osssso+++.      Theme     : NerdFont + Gruvbox Dark
+     /ossssssss/        +ssssooo/-      Hobby     : AI, Linux, low-level code
+   `/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering for Code 
+  `+sso+:-`                 `.-/+oso:   Motto     : "Learn. Build. Play Dark Souls. Repeat."
+ `++:.                           `-/+/   
+ .`                                 
+</div>
 
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
     const terminal = document.getElementById("terminal");
 
-    const fastfetchLines = [
-      "[phantekzy@archlinux ~]$ fastfetch",
-      "",
-      "                   -`                   phantekzy@archlinux",
-      "                  .o+`                  -------------------------------",
-      "                 `ooo/                  Full Name : Maini Lotfi Abdelkader",
-      "                `+oooo:                 Alias     : phantekzy",
-      "               `+oooooo:                Location  : Bir Mourad Raïs, Algiers, Algeria",
-      "               -+oooooo+:               Age       : 28 (born 1996-09-08)",
-      "             `/:-:++oooo+:              Role      : Elden Lord + Web Dev + CyberSec",
-      "            `/++++/+++++++:             Status    : Currently exploring ArchLinux",
-      "           `/++++++++++++++:            WM        : Hyprland ",
-      "          `/+++ooooooooooooo/`          Shell     : Zsh + Starship",
-      "         ./ooosssso++osssssso+`         Editor    : Neovim (Lua)",
-      "        .oossssso-````/ossssss+`        Terminal  : Alacritty",
-      "       -osssssso.      :ssssssso.       Browser   : Firefox / W3M",
-      "      :osssssss/        osssso+++.      Theme     : NerdFont + Gruvbox Dark",
-      "     /ossssssss/        +ssssooo/-      Hobby     : AI, Linux, low-level code",
-      "   `/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering for Code",
-      "  `+sso+:-`                 `.-/+oso:   Motto     : \"Learn. Build. Play Dark Souls. Repeat.\"",
-      " `++:.                           `-/+/   ",
-      " .`                                 ",
-      ""
-    ];
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
-    const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+    async function typeReadme() {
+      const response = await fetch("readme.txt");
+      const text = await response.text();
+      const lines = text.split("\n");
 
-    async function typeLines(lines, container, typeSpeed = 10) {
       for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        const lineContainer = document.createElement("div");
-        container.appendChild(lineContainer);
+        const lineElement = document.createElement("div");
+        terminal.appendChild(lineElement);
 
         await new Promise(resolve => {
-          new Typed(lineContainer, {
-            strings: [line],
-            typeSpeed: typeSpeed,
-            showCursor: i === lines.length - 1, // show cursor only on last line
+          new Typed(lineElement, {
+            strings: [lines[i]],
+            typeSpeed: 10,
+            showCursor: i === lines.length - 1,
             cursorChar: "_",
             onComplete: () => resolve()
           });
@@ -87,18 +89,7 @@
       }
     }
 
-    async function startTyping() {
-      await typeLines(fastfetchLines, terminal, 10);
-
-      // Then load readme.txt
-      const response = await fetch("readme.txt");
-      const text = await response.text();
-      const readmeLines = text.split("\n");
-
-      await typeLines(readmeLines, terminal, 10);
-    }
-
-    startTyping();
+    typeReadme();
   </script>
 </body>
 </html>
