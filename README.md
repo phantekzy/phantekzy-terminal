@@ -8,19 +8,19 @@ Simulates a real ArchLinux terminal using fastfetch + fake commands.
 
 ## LIVE DEMO
 
-➡️ https://phantekzy.github.io/terminal-portfolio/
+➡️ https://phantekzy.github.io/phantekzy-terminal/
 
 ---
 
 ## ABOUT
 
-- Name     : Maini Lotfi Abdelkader
-- Alias    : phantekzy
-- Age      : 28
-- From     : Algiers, Algeria
-- Role     : Web Dev / CyberSec Learner
-- Setup    : ArchLinux + Hyprland + Neovim + Zsh
-- Status   : Learning, building, hacking life
+- Name     : Maini Lotfi Abdelkader  
+- Alias    : phantekzy  
+- Age      : 28  
+- From     : Algiers, Algeria  
+- Role     : Web Dev / CyberSec Learner  
+- Setup    : ArchLinux + Hyprland + Neovim + Zsh  
+- Status   : Learning, building, hacking life  
 
 ---
 
