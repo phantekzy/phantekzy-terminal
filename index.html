@@ -39,21 +39,21 @@
   <pre id="terminal"></pre>
 
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  <script>
-    fetch("readme.txt")
-      .then(response => response.text())
-      .then(text => {
-        const lines = text.split("\n");
-        new Typed("#terminal", {
-          strings: lines,
-          typeSpeed: 5,          // faster typing speed
-          startDelay: 200,       // short initial delay
-          smartBackspace: false,
-          showCursor: true,
-          cursorChar: "_",
-          loop: false
-        });
+<script>
+  fetch("readme.txt")
+    .then(response => response.text())
+    .then(text => {
+      // Wrap the entire readme content as one string (with \n preserved)
+      new Typed("#terminal", {
+        strings: [text],
+        typeSpeed: 5,
+        startDelay: 200,
+        smartBackspace: false,
+        showCursor: true,
+        cursorChar: "_",
+        loop: false
       });
-  </script>
+    });
+</script>
 </body>
 </html>
