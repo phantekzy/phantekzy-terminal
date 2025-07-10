@@ -25,7 +25,6 @@
   \ \ \/   \/_/\/_/ \/__/\/_/ \/_/\/_/ \/__/ \/____/  \/_/\/_/\/____/ `/___/> \
    \ \_\                                                                 /\___/
     \/_/                                                                 \/__/ 
-
     </pre>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
@@ -53,6 +52,7 @@
  \`++:.                           \`-/+/
  .\`    
 `;
+
     const postFilesCommands = [
       '[phantekzy@archlinux ~]$ cd ~/socials/',
       '[phantekzy@archlinux socials]$ curl -s linkedin.com/in/maini-lotfi | grep -i "Maini Lotfi"',
@@ -72,30 +72,28 @@
     ];
 
     async function run() {
-      // animate fastfetch command
-      let d = document.createElement('div'); term.appendChild(d);
-      await new Promise(r => new Typed(d, { strings: [fastfetchCmd], typeSpeed: 20, showCursor: false, onComplete: r }));
-      term.scrollTop = term.scrollHeight;
-      await new Promise(r => setTimeout(r, 200));
+      const typeSpeed = 5;
+      const shortWait = 30;
 
-      // static fastfetch art
+      let d = document.createElement('div'); term.appendChild(d);
+      await new Promise(r => new Typed(d, { strings: [fastfetchCmd], typeSpeed, showCursor: false, onComplete: r }));
+      term.scrollTop = term.scrollHeight;
+      await new Promise(r => setTimeout(r, shortWait));
+
       term.insertAdjacentHTML('beforeend', `<pre>${fastfetchArt}</pre>`);
       term.scrollTop = term.scrollHeight;
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, shortWait));
 
-      // animate cd to dev_stack
       d = document.createElement('div'); term.appendChild(d);
-      await new Promise(r => new Typed(d, { strings: ['[phantekzy@archlinux ~]$ cd ~/skills/dev_stack/'], typeSpeed: 20, showCursor: false, onComplete: r }));
+      await new Promise(r => new Typed(d, { strings: ['[phantekzy@archlinux ~]$ cd ~/skills/dev_stack/'], typeSpeed, showCursor: false, onComplete: r }));
       term.scrollTop = term.scrollHeight;
-      await new Promise(r => setTimeout(r, 100));
+      await new Promise(r => setTimeout(r, shortWait));
 
-      // animate ls -la
       d = document.createElement('div'); term.appendChild(d);
-      await new Promise(r => new Typed(d, { strings: ['[phantekzy@archlinux dev_stack]$ ls -la'], typeSpeed: 20, showCursor: false, onComplete: r }));
+      await new Promise(r => new Typed(d, { strings: ['[phantekzy@archlinux dev_stack]$ ls -la'], typeSpeed, showCursor: false, onComplete: r }));
       term.scrollTop = term.scrollHeight;
-      await new Promise(r => setTimeout(r, 100));
+      await new Promise(r => setTimeout(r, shortWait));
 
-      // static file list
       const files = [
         '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 HTML5',
         '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 CSS3',
@@ -107,19 +105,18 @@
       ];
       term.insertAdjacentHTML('beforeend', `<pre>${files.join('\n')}</pre>`);
       term.scrollTop = term.scrollHeight;
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, shortWait));
 
-      // animate remaining commands
       for (let cmd of postFilesCommands) {
         d = document.createElement('div'); term.appendChild(d);
-        await new Promise(r => new Typed(d, { strings: [cmd], typeSpeed: 20, showCursor: false, onComplete: r }));
+        await new Promise(r => new Typed(d, { strings: [cmd], typeSpeed, showCursor: false, onComplete: r }));
         term.scrollTop = term.scrollHeight;
-        await new Promise(r => setTimeout(r, 100));
+        await new Promise(r => setTimeout(r, shortWait));
       }
 
-      // blinking cursor
       const cursor = document.createElement('span'); cursor.className = 'cursor'; term.lastChild.appendChild(cursor);
     }
+
     run();
   </script>
 </body>
