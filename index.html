@@ -16,9 +16,10 @@
     }
 
     #terminal {
-      line-height: 1.6;
-      letter-spacing: 0.5px;
+      white-space: pre; /* key fix for ASCII art */
       font-size: 14px;
+      line-height: 1.2;
+      letter-spacing: normal;
     }
 
     .typed-cursor {
@@ -41,14 +42,13 @@
     fetch("readme.txt")
       .then(response => response.text())
       .then(text => {
-        const processedText = text.replace(/\n/g, "<br>");
         new Typed("#terminal", {
-          strings: [processedText],
-          typeSpeed: 5,
-          startDelay: 200,
-          smartBackspace: false,
+          strings: [text],
+          typeSpeed: 10,     // smooth & readable
+          startDelay: 300,
           showCursor: true,
           cursorChar: "_",
+          smartBackspace: false,
           loop: false
         });
       });
