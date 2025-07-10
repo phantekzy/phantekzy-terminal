@@ -1,121 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>phantekzy | Terminal Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet"/>
   <style>
-    :root {
-      --bg: #000;
-      --fg: #33ff33;
-      --accent: #0f0;
-    }
+    html, body { height: 100%; margin: 0; padding: 0; }
     body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      background: var(--bg);
-      color: var(--fg);
+      background: #0d0d0d;
+      color: #00ff00;
       font-family: 'Fira Code', monospace;
-      display: flex;
-      flex-direction: column;
     }
     #terminal {
-      flex-grow: 1;
-      padding: 20px;
-      overflow-y: auto;
-      white-space: pre-wrap;
-    }
-    #inputLine {
-      display: flex;
-    }
-    #inputPrompt {
-      flex-shrink: 0;
-    }
-    #inputText {
-      background: transparent;
-      border: none;
-      color: var(--fg);
-      font: inherit;
-      outline: none;
       width: 100%;
+      height: 100%;
+      padding: 30px;
+      background: #111;
+      white-space: pre;
+      overflow-y: auto;
+    }
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      margin-left: 2px;
+      background: #00ff00;
+      animation: blink 0.7s steps(1) infinite;
+      vertical-align: bottom;
+    }
+    @keyframes blink {
+      0%,100% { opacity:1; }
+      50% { opacity:0; }
     }
   </style>
 </head>
 <body>
-  <div id="terminal"></div>
-  <div id="inputLine">
-    <span id="inputPrompt">[phantekzy@archlinux ~]$</span>&nbsp;
-    <input type="text" id="inputText" autofocus autocomplete="off">
+  <div id="terminal">
+    <pre>
+             __                          __             __                          
+       /\ \                        /\ \__         /\ \                         
+ _____ \ \ \___       __       ___ \ \ ,_\     __ \ \ \/'\   ____    __  __    
+/\ '__`\\ \  _ `\   /'__`\   /' _ `\\ \ \/   /'__`\\ \ , <  /\_ ,`\ /\ \/\ \   
+\ \ \L\ \\ \ \ \ \ /\ \L\.\_ /\ \/\ \\ \ \_ /\  __/ \ \ \\`\\/_/  /_\ \ \_\ \  
+ \ \ ,__/ \ \_\ \_\\ \__/.\_\\ \_\ \_\\ \__\\ \____\ \ \_\ \_\/\____\\/`____ \ 
+  \ \ \/   \/_/\/_/ \/__/\/_/ \/_/\/_/ \/__/ \/____/  \/_/\/_/\/____/ `/___/> \
+   \ \_\                                                                 /\___/
+    \/_/                                                                 \/__/ 
+    </pre>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
-    const terminal = document.getElementById('terminal');
-    const inputText = document.getElementById('inputText');
+    const term = document.getElementById('terminal');
+    const fastfetchCmd = '[phantekzy@archlinux ~]$ fastfetch';
+    const fastfetchArt = `
+              -\`                   phantekzy@archlinux
+                  .o+\`                  -------------------------------
+                 \`ooo/                  Full Name : Maini Lotfi Abdelkader
+                \`+oooo:                 Alias     : phantekzy
+               \`+oooooo:                Location  : Bir Mourad Raïs, Algiers, Algeria
+               -+oooooo+:               Age       : 28 (born 1996-09-08)
+             \`/:-:++oooo+:              Role      : Elden Lord + Web Dev + CyberSec
+            \`/++++/+++++++:             Status    : Currently exploring ArchLinux
+           \`/++++++++++++++:            WM        : Hyprland 
+          \`/+++ooooooooooooo/\\\`         Shell     : Zsh + Starship
+         ./ooosssso++osssssso+\`         Editor    : Neovim (Lua)
+        .oossssso-\`\`\`\`/ossssss+\`        Terminal  : Alacritty
+       -osssssso.      :ssssssso.       Browser   : Firefox / W3M
+      :osssssss/        osssso+++.      Theme     : NerdFont + Gruvbox Dark
+     /ossssssss/        +ssssooo/-      Hobby     : AI, Linux, low-level code
+   \`/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering for Code 
+  \`+sso+:-\`                 \`.-/+oso:   Motto     : "Learn. Build. Play Dark Souls. Repeat."
+ \`++:.                           \`-/+/
+ .\`    
+`;
 
-    const commands = {
-      help: `Available commands:
-  help        Show this help message
-  skills      Show my dev stack
-  socials     Show social links
-  contact     Display contact info
-  resume      Download resume
-  clear       Clear terminal
-  exit        Exit session`,
+    const postFilesCommands = [
+      '[phantekzy@archlinux ~]$ cd ~/socials/',
+      '',
 
-      skills: `Dev Stack:
-  - HTML5
-  - CSS3
-  - JavaScript
-  - PHP
-  - Node.js
-  - React
-  - MySQL`,
+      '[phantekzy@archlinux socials]$ curl -s linkedin.com/in/maini-lotfi | grep -i "Maini Lotfi"',
+      '[ OK ] Loaded LinkedIn profile',
+      '',
 
-      socials: `Socials:
-  - LinkedIn: linkedin.com/in/maini-lotfi
-  - Twitter: twitter.com/mainilotfi
-  - YouTube: youtube.com/@phantekzy`,
+      '[phantekzy@archlinux socials]$ curl -s x.com/mainilotfi | grep -i "Maini Lotfi"',
+      '[ OK ] X/Twitter feed found',
+      '',
 
-      contact: `Email: mainilotfi@gmail.com`,
+      '[phantekzy@archlinux socials]$ curl -s youtube.com/@phantekzy | grep -i "phantekzy"',
+      '[ OK ] YouTube channel detected',
+      '',
 
-      resume: `Downloading resume...`,
+      '[phantekzy@archlinux socials]$ mail -s "Contact" mainilotfi@gmail.com',
+      '[ INFO ] Opening email client...',
+      '',
 
-      exit: `logout
-███████████ Process terminated successfully.`
-    };
+      '[phantekzy@archlinux ~]$ uname -a',
+      'Linux archlinux 6.9.6-arch1-1 x86_64 GNU/Linux',
+      '',
 
-    function handleCommand(cmd) {
-      let output;
-      if (commands[cmd]) {
-        output = commands[cmd];
-        if (cmd === 'resume') {
-          const a = document.createElement('a');
-          a.href = 'Resume.pdf';
-          a.download = 'Maini_Lotfi_Resume.pdf';
-          a.click();
+      '[phantekzy@archlinux ~]$ exit',
+      'logout',
+      '',
+
+      '███████████ Process terminated successfully.',
+      '',
+
+      'Thank you for visiting PHANTEKZY\'s Arch terminal'
+    ];
+
+    async function run() {
+      let d = document.createElement('div'); term.appendChild(d);
+      await new Promise(r => new Typed(d, { strings: [fastfetchCmd], typeSpeed: 20, showCursor: false, onComplete: r }));
+      term.scrollTop = term.scrollHeight;
+      await new Promise(r => setTimeout(r, 200));
+
+      term.insertAdjacentHTML('beforeend', `<pre>${fastfetchArt}</pre>`);
+      term.scrollTop = term.scrollHeight;
+      await new Promise(r => setTimeout(r, 200));
+
+      d = document.createElement('div'); term.appendChild(d);
+      await new Promise(r => new Typed(d, { strings: ['[phantekzy@archlinux ~]$ cd ~/skills/dev_stack/'], typeSpeed: 20, showCursor: false, onComplete: r }));
+      term.scrollTop = term.scrollHeight;
+      await new Promise(r => setTimeout(r, 100));
+
+      d = document.createElement('div'); term.appendChild(d);
+      await new Promise(r => new Typed(d, { strings: ['[phantekzy@archlinux dev_stack]$ ls -la'], typeSpeed: 20, showCursor: false, onComplete: r }));
+      term.scrollTop = term.scrollHeight;
+      await new Promise(r => setTimeout(r, 100));
+
+      const files = [
+        '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 HTML5',
+        '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 CSS3',
+        '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 JavaScript',
+        '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 PHP',
+        '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 Node.js',
+        '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 React',
+        '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 MySQL'
+      ];
+      term.insertAdjacentHTML('beforeend', `<pre>${files.join('\n')}</pre>`);
+      term.scrollTop = term.scrollHeight;
+      await new Promise(r => setTimeout(r, 200));
+
+      for (let cmd of postFilesCommands) {
+        if (cmd.trim() === '') {
+          const br = document.createElement('br');
+          term.appendChild(br);
+        } else {
+          const d = document.createElement('div');
+          term.appendChild(d);
+          await new Promise(r =>
+            new Typed(d, {
+              strings: [cmd],
+              typeSpeed: 20,
+              showCursor: false,
+              onComplete: r
+            })
+          );
         }
-      } else if (cmd === 'clear') {
-        terminal.innerHTML = '';
-        return;
-      } else {
-        output = `command not found: ${cmd}`;
+        term.scrollTop = term.scrollHeight;
+        await new Promise(r => setTimeout(r, 100));
       }
 
-      const div = document.createElement('div');
-      div.textContent = `[phantekzy@archlinux ~]$ ${cmd}\n${output}`;
-      terminal.appendChild(div);
-      terminal.scrollTop = terminal.scrollHeight;
+      const cursor = document.createElement('span');
+      cursor.className = 'cursor';
+      term.lastChild.appendChild(cursor);
     }
 
-    inputText.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const cmd = inputText.value.trim();
-        handleCommand(cmd);
-        inputText.value = '';
-      }
-    });
+    run();
   </script>
 </body>
 </html>
