@@ -28,8 +28,7 @@
    `/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering for Code 
   `+sso+:-`                 `.-/+oso:   Motto     : "Learn. Build. Play Dark Souls. Repeat."
  `++:.                           `-/+/   
- .`                                 `
-
+ .`                                 
 
 [phantekzy@archlinux ~]$ cd ~/skills/dev_stack/
 
@@ -65,4 +64,4 @@ logout
 
 ███████████ Process terminated successfully.
 
-Thank you for visiting PHANTEKZY's Arch terminal 
+Thank you for visiting PHANTEKZY's Arch terminal
