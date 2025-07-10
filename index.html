@@ -10,7 +10,7 @@
       margin: 0;
       background-color: #0d0d0d;
       color: #00ff00;
-      font-family: 'Fira Code', monospace;
+      font-family: 'Fira Code', 'Courier New', monospace;
       padding: 20px;
       white-space: pre-wrap;
       overflow-y: scroll;
@@ -18,7 +18,8 @@
 
     #terminal {
       white-space: pre-wrap;
-      line-height: 1.5;
+      line-height: 1.6;
+      letter-spacing: 0.5px;
     }
 
     .typed-cursor {
@@ -38,21 +39,21 @@
 
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
-   fetch("readme.txt")
-  .then(response => response.text())
-  .then(text => {
-    const lines = text.split("\n");
-    new Typed("#terminal", {
-      strings: lines,
-      typeSpeed: 5,          // faster typing speed (lower = faster)
-      startDelay: 200,       // small delay before starting
-      backSpeed: 0,          // not used, but keep clean
-      smartBackspace: false,
-      showCursor: true,
-      cursorChar: "_",
-      loop: false
-    });
-  });
+    fetch("readme.txt")
+      .then(response => response.text())
+      .then(text => {
+        const lines = text.split("\n");
+        new Typed("#terminal", {
+          strings: lines,
+          typeSpeed: 3,          
+          startDelay: 200,
+          backSpeed: 0,
+          smartBackspace: false,
+          showCursor: true,
+          cursorChar: "_",
+          loop: false
+        });
+      });
   </script>
 </body>
 </html>
