@@ -12,7 +12,7 @@
       color: #00ff00;
       font-family: 'Fira Code', monospace;
       padding: 20px;
-      overflow-y: scroll;
+      overflow-y: auto;
     }
 
     #ascii-container {
@@ -27,6 +27,7 @@
     #terminal {
       white-space: pre-wrap;
       line-height: 1.5;
+      font-size: 14px;
     }
 
     .typed-cursor {
@@ -90,10 +91,9 @@ Motto     : "Learn. Build. Play Dark Souls. Repeat."
     </div>
   </div>
 
-  <!-- Typing area -->
+  <!-- Typing animation appears here -->
   <div id="terminal"></div>
 
-  <!-- Typed.js -->
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
     fetch("readme.txt")
@@ -101,7 +101,8 @@ Motto     : "Learn. Build. Play Dark Souls. Repeat."
       .then(text => {
         new Typed("#terminal", {
           strings: [text],
-          typeSpeed: 10,
+          typeSpeed: 12,
+          startDelay: 300,
           showCursor: true,
           cursorChar: "_",
           smartBackspace: false,
