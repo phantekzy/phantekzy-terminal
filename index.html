@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>phantekzy | Terminal Portfolio</title>
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" as="style"/>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -13,7 +12,11 @@
       --bg-light: #f5f5f5;
       --fg-light: #007700;
     }
-    html, body { height: 100%; margin: 0; padding: 0; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
     body {
       background: var(--bg);
       color: var(--fg);
@@ -25,24 +28,29 @@
       color: var(--fg-light);
     }
     #terminal {
-      position: relative;
       width: 100%;
       height: 100%;
-      padding: 30px;
+      padding: 20px;
       background: #111;
-      white-space: pre;
+      white-space: pre-wrap;
       overflow-y: auto;
     }
     .cursor {
       display: inline-block;
       width: 8px;
+      height: 16px;
       margin-left: 2px;
-      background: var(--fg);
+      background: currentColor;
       animation: blink 0.7s steps(1) infinite, flicker 0.1s infinite;
-      vertical-align: bottom;
     }
-    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
-    @keyframes flicker { 0%,100% { opacity: 1; } 50% { opacity: 0.85; } }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.85; }
+    }
     #controls {
       position: fixed;
       top: 10px;
@@ -55,12 +63,12 @@
       background: #222;
       color: var(--fg);
       border: none;
-      padding: 6px 10px;
-      cursor: pointer;
+      padding: 5px 10px;
       font-family: 'Fira Code', monospace;
+      cursor: pointer;
     }
     body.light #controls button {
-      background: #ddd;
+      background: #ccc;
       color: var(--fg-light);
     }
   </style>
@@ -72,23 +80,10 @@
     <button id="speedDown">-</button>
     <button id="speedUp">+</button>
   </div>
-  <main role="application" aria-label="Interactive terminal portfolio">
-    <div id="terminal">
-      <div aria-live="polite" id="live"></div>
-      <pre>
-               __                          __             __                          
-         /\ \                        /\ \__         /\ \                         
-   _____ \ \ \___       __       ___ \ \ ,_\     __ \ \ \/'\   ____    __  __    
-  /\ '__`\\ \  _ `\   /'__`\   /' _ `\\ \ \/   /'__`\\ \ , <  /\_ ,`\ /\ \/\ \   
-  \ \ \L\ \\ \ \ \ \\ /\ \L\.\_ /\ \/\ \\ \ \_ /\  __/ \ \ \\`\\/_/  /_\ \ \_\ \  
-   \ \ ,__/ \ \_\ \_\\ \__/.
-      \\ \_\ \_\\ \__\\ \____\ \ \_\ \_\/\____\\/`____ \ 
-    \\ \ \/   \/_/\/_/ \/__/\/_/ \\/__/ \/____/  \/_/\/_/\/____/ `/___/> \ 
-     \\ \_\                                                                 /\___/  
-      \\/_/                                                                 \/__/   
-      </pre>
-    </div>
-  </main>
+  <div id="terminal">
+    <div id="live" aria-live="polite" style="position:absolute; left:-9999px;"></div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
     const term = document.getElementById('terminal');
@@ -96,14 +91,31 @@
     let typeSpeed = 20;
     let paused = false;
 
+    const art = `
+             __                          __             __                          
+       /\\ \\                        /\\ \\__         /\\ \\                         
+ _____ \\ \\ \\___       __       ___ \\ \\ ,_\\     __ \\ \\ \\/'\\   ____    __  __    
+/\\ '__\`\\\\ \\  _ \`\\   /'__\`\\   /' _ \`\\\\ \\ \\/   /'__\`\\\\ \\ , <  /\\_ ,\`\\ /\\ \\/\\ \\   
+\\ \\ \\L\\ \\\\ \\ \\ \\ \\\\ /\\ \\L\\.\\_ /\\ \\/\\ \\\\ \\ \\_ /\\  __/ \\ \\ \\\\`\\\\/_/  /_\\ \\ \\_\\ \\  
+ \\ \\ ,__/ \\ \\_\\ \\_\\\\ \\__/.\\_\\\\ \\_\\ \\_\\\\ \\__\\\\ \\____\\ \\ \\_\\ \\_\\/\\____\\\\/`____ \\ 
+  \\ \\ \\/   \\/_/\\/_/ \\/__/\\/_/ \\/_/\\/_/ \\/__/ \\/____/  \\/_/\\/_/\\/____/ `/___/> \\
+   \\ \\_\\                                                                 /\\___/
+    \\/_/                                                                 \\/__/
+`;
+
     const commands = [
       '[phantekzy@archlinux ~]$ fastfetch',
-      'fastfetch output...',
+      art,
       '[phantekzy@archlinux ~]$ cd ~/skills/dev_stack/',
       '[phantekzy@archlinux dev_stack]$ ls -la',
-      // file list block
-      'HTML5  CSS3  JavaScript  PHP  Node.js  React  MySQL',
-      // socials with spacing
+      '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 HTML5',
+      '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 CSS3',
+      '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 JavaScript',
+      '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 PHP',
+      '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 Node.js',
+      '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 React',
+      '-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 MySQL',
+      '',
       '[phantekzy@archlinux ~]$ cd ~/socials/',
       '',
       '[phantekzy@archlinux socials]$ curl -s linkedin.com/in/maini-lotfi | grep -i "Maini Lotfi"',
@@ -133,33 +145,54 @@
     ];
 
     // controls
-    document.getElementById('themeToggle').onclick = () => document.body.classList.toggle('light');
-    document.getElementById('skip').onclick = () => paused = true;
-    document.getElementById('speedUp').onclick = () => typeSpeed = Math.max(5, typeSpeed - 5);
-    document.getElementById('speedDown').onclick = () => typeSpeed += 5;
+    document.getElementById('themeToggle').onclick = () => {
+      document.body.classList.toggle('light');
+    };
+    document.getElementById('skip').onclick = () => {
+      paused = true;
+      term.innerHTML += '<br><span class="cursor"></span>';
+    };
+    document.getElementById('speedUp').onclick = () => {
+      typeSpeed = Math.max(5, typeSpeed - 5);
+    };
+    document.getElementById('speedDown').onclick = () => {
+      typeSpeed += 5;
+    };
 
     async function run() {
       for (let cmd of commands) {
-        if (paused) break;
+        if (paused) return;
+
+        const div = document.createElement('div');
+        term.appendChild(div);
         let text = typeof cmd === 'function' ? cmd() : cmd;
-        if (text === '') {
-          term.appendChild(document.createElement('br'));
-        } else {
-          const div = document.createElement('div');
-          term.appendChild(div);
-          live.textContent = text;
-          if (text.includes('Resume.pdf')) {
-            // trigger download
-            const a = document.createElement('a');
-            a.href = 'Resume.pdf'; a.download = 'Maini_Lotfi_Resume.pdf';
-            a.click();
-          }
-          await new Promise(r => new Typed(div, {
+        live.textContent = text;
+
+        if (text.includes('Resume.pdf')) {
+          const a = document.createElement('a');
+          a.href = 'Resume.pdf';
+          a.download = 'Maini_Lotfi_Resume.pdf';
+          a.click();
+        }
+
+        await new Promise(r =>
+          new Typed(div, {
             strings: [text],
             typeSpeed,
             showCursor: false,
             onComplete: r
-          }));
-        }
+          })
+        );
         term.scrollTop = term.scrollHeight;
-        await new Promise(r => setTimeout(r, 
+        await new Promise(r => setTimeout(r, 100));
+      }
+
+      const cursor = document.createElement('span');
+      cursor.className = 'cursor';
+      term.appendChild(cursor);
+    }
+
+    run();
+  </script>
+</body>
+</html>
