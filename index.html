@@ -38,17 +38,21 @@
 
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
-    fetch("readme.txt")
-      .then(response => response.text())
-      .then(text => {
-        new Typed("#terminal", {
-          strings: [text],
-          typeSpeed: 5,
-          showCursor: true,
-          cursorChar: "_",
-          smartBackspace: false
-        });
-      });
+   fetch("readme.txt")
+  .then(response => response.text())
+  .then(text => {
+    const lines = text.split("\n");
+    new Typed("#terminal", {
+      strings: lines,
+      typeSpeed: 5,          // faster typing speed (lower = faster)
+      startDelay: 200,       // small delay before starting
+      backSpeed: 0,          // not used, but keep clean
+      smartBackspace: false,
+      showCursor: true,
+      cursorChar: "_",
+      loop: false
+    });
+  });
   </script>
 </body>
 </html>
