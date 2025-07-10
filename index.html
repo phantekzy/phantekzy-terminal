@@ -17,9 +17,10 @@
     }
 
     #terminal {
+      font-size: 14px;
       white-space: pre-wrap;
-      line-height: 1.6;
-      letter-spacing: 0.5px;
+      line-height: 1.6;          /* More vertical breathing room */
+      letter-spacing: 0.5px;     /* Better horizontal spacing */
     }
 
     .typed-cursor {
@@ -35,7 +36,7 @@
 </head>
 <body>
 
-  <div id="terminal"></div>
+  <pre id="terminal"></pre>
 
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
@@ -45,9 +46,8 @@
         const lines = text.split("\n");
         new Typed("#terminal", {
           strings: lines,
-          typeSpeed: 3,          
-          startDelay: 200,
-          backSpeed: 0,
+          typeSpeed: 5,          // faster typing speed
+          startDelay: 200,       // short initial delay
           smartBackspace: false,
           showCursor: true,
           cursorChar: "_",
