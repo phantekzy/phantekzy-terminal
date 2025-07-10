@@ -2,30 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>phantekzy | Terminal Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+  <!-- Monospace font -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
   <style>
+    /* Reset & Base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
       background-color: #0d0d0d;
       color: #00ff00;
       font-family: 'Fira Code', monospace;
-      padding: 20px;
-      overflow-y: auto;
-    }
-
-    #terminal {
-      white-space: pre;
       line-height: 1.4;
-      font-size: 14px;
+      overflow: hidden;
     }
-
-    .typed-cursor {
-      font-weight: bold;
-      animation: blink 1s infinite;
+    /* Terminal container */
+    #terminal {
+      width: 90vw;
+      max-width: 800px;
+      height: 90vh;
+      margin: 4vh auto;
+      padding: 20px;
+      background: #111;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+      overflow-y: auto;
+      white-space: pre;
+      position: relative;
     }
-
+    /* Cursor animation */
+    .cursor {
+      display: inline-block;
+      background-color: #00ff00;
+      width: 8px;
+      margin-left: 2px;
+      animation: blink 0.7s steps(1) infinite;
+      vertical-align: bottom;
+    }
     @keyframes blink {
       0%, 100% { opacity: 1; }
       50% { opacity: 0; }
@@ -33,63 +46,88 @@
   </style>
 </head>
 <body>
+  <div id="terminal"></div>
 
-  <div id="terminal">
-[phantekzy@archlinux ~]$ fastfetch
-
-                   -`                   phantekzy@archlinux
-                  .o+`                  -------------------------------
-                 `ooo/                  Full Name : Maini Lotfi Abdelkader
-                `+oooo:                 Alias     : phantekzy
-               `+oooooo:                Location  : Bir Mourad Raïs, Algiers, Algeria
-               -+oooooo+:               Age       : 28 (born 1996-09-08)
-             `/:-:++oooo+:              Role      : Elden Lord + Web Dev + CyberSec
-            `/++++/+++++++:             Status    : Currently exploring ArchLinux
-           `/++++++++++++++:            WM        : Hyprland 
-          `/+++ooooooooooooo/`          Shell     : Zsh + Starship
-         ./ooosssso++osssssso+`         Editor    : Neovim (Lua)
-        .oossssso-````/ossssss+`        Terminal  : Alacritty
-       -osssssso.      :ssssssso.       Browser   : Firefox / W3M
-      :osssssss/        osssso+++.      Theme     : NerdFont + Gruvbox Dark
-     /ossssssss/        +ssssooo/-      Hobby     : AI, Linux, low-level code
-   `/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering for Code 
-  `+sso+:-`                 `.-/+oso:   Motto     : "Learn. Build. Play Dark Souls. Repeat."
- `++:.                           `-/+/   
- .`                                 
-</div>
-
+  <!-- Typed.js library -->
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
-    const terminal = document.getElementById("terminal");
+    const terminal = document.getElementById('terminal');
+    const lines = [
+      '[phantekzy@archlinux ~]$ fastfetch',
+      '',
+      '                   -`                   phantekzy@archlinux',
+      '                  .o+`                  -------------------------------',
+      '                 `ooo/                  Full Name : Maini Lotfi Abdelkader',
+      '                `+oooo:                 Alias     : phantekzy',
+      '               `+oooooo:                Location  : Bir Mourad Raïs, Algiers, Algeria',
+      '               -+oooooo+:               Age       : 28 (born 1996-09-08)',
+      '             `/:-:++oooo+:              Role      : Elden Lord + Web Dev + CyberSec',
+      '            `/++++/+++++++:             Status    : Currently exploring ArchLinux',
+      '           `/++++++++++++++:            WM        : Hyprland',
+      '          `/+++ooooooooooooo/`          Shell     : Zsh + Starship',
+      '         ./ooosssso++osssssso+`         Editor    : Neovim (Lua)',
+      '        .oossssso-````/ossssss+`        Terminal  : Alacritty',
+      '       -osssssso.      :ssssssso.       Browser   : Firefox / W3M',
+      '      :osssssss/        osssso+++.      Theme     : NerdFont + Gruvbox Dark',
+      '     /ossssssss/        +ssssooo/-      Hobby     : AI, Linux, low-level code',
+      '   `/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering for Code',
+      '  `+sso+:-`                 `.-/+oso:   Motto     : "Learn. Build. Play Dark Souls. Repeat."',
+      ' `++:.                           `-/+/',
+      ' .`                                 ',
+      '',
+      '[phantekzy@archlinux ~]$ cd ~/skills/dev_stack/',
+      '[phantekzy@archlinux dev_stack]$ ls -la',
+      'HTML5  CSS3  JavaScript  PHP  Node.js  React  MySQL',
+      '',
+      '[phantekzy@archlinux ~]$ cd ~/socials/',
+      '[phantekzy@archlinux socials]$ curl -s linkedin.com/in/maini-lotfi | grep -i "Maini Lotfi"',
+      '[ OK ] Loaded LinkedIn profile',
+      '[phantekzy@archlinux socials]$ curl -s x.com/mainilotfi | grep -i "Maini Lotfi"',
+      '[ OK ] X feed found',
+      '[phantekzy@archlinux socials]$ curl -s youtube.com/@phantekzy | grep -i "phantekzy"',
+      '[ OK ] YouTube channel detected',
+      '[phantekzy@archlinux socials]$ mail -s "Contact" mainilotfi@gmail.com',
+      '[ INFO ] Opening email client...',
+      '',
+      '[phantekzy@archlinux ~]$ uname -a',
+      'Linux archlinux 6.9.6-arch1-1 x86_64 GNU/Linux',
+      '',
+      '[phantekzy@archlinux ~]$ exit',
+      'logout',
+      '',
+      '███████████ Process terminated successfully.',
+      '',
+      'Thank you for visiting PHANTEKZY\'s Arch terminal.'
+    ];
 
-    function delay(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    async function typeReadme() {
-      const response = await fetch("readme.txt");
-      const text = await response.text();
-      const lines = text.split("\n");
-
-      for (let i = 0; i < lines.length; i++) {
-        const lineElement = document.createElement("div");
-        terminal.appendChild(lineElement);
-
-        await new Promise(resolve => {
-          new Typed(lineElement, {
-            strings: [lines[i]],
-            typeSpeed: 10,
-            showCursor: i === lines.length - 1,
-            cursorChar: "_",
-            onComplete: () => resolve()
-          });
+    // Utility to type each line
+    function typeLine(line) {
+      return new Promise(resolve => {
+        const div = document.createElement('div');
+        terminal.appendChild(div);
+        new Typed(div, {
+          strings: [line],
+          typeSpeed: 20,
+          backSpeed: 0,
+          showCursor: false,
+          onComplete: () => resolve()
         });
-
-        await delay(50);
-      }
+      });
     }
 
-    typeReadme();
+    // Main async typing sequence
+    (async () => {
+      for (let i = 0; i < lines.length; i++) {
+        await typeLine(lines[i]);
+        await new Promise(r => setTimeout(r, 50));
+        // auto-scroll
+        terminal.scrollTop = terminal.scrollHeight;
+      }
+      // Append a blinking cursor at end
+      const cursor = document.createElement('span');
+      cursor.className = 'cursor';
+      terminal.lastChild.appendChild(cursor);
+    })();
   </script>
 </body>
 </html>
