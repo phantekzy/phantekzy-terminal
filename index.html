@@ -16,9 +16,16 @@
     }
 
     #terminal {
-      white-space: pre; /* exact spacing */
+      white-space: pre;
       font-size: 16px;
       line-height: 1.4;
+    }
+
+    #static-content {
+      white-space: pre;
+      font-size: 16px;
+      line-height: 1.4;
+      margin-bottom: 20px;
     }
 
     .typed-cursor {
@@ -34,6 +41,7 @@
 </head>
 <body>
 
+  <div id="static-content"></div>
   <div id="terminal"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
@@ -41,8 +49,11 @@
     fetch("readme.txt")
       .then(response => response.text())
       .then(text => {
+        const [staticPart, typedPart] = text.split("[TYPING_START]");
+        document.getElementById("static-content").textContent = staticPart.trim();
+
         new Typed("#terminal", {
-          strings: [text],
+          strings: [typedPart.trim()],
           typeSpeed: 10,
           showCursor: true,
           cursorChar: "_",
