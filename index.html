@@ -53,27 +53,27 @@
   <div id="terminal"></div>
 
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const terminal = document.getElementById('terminal');
-    const themes = ['matrix','ubuntu','dark','light'];
-    let history = [], histIdx = 0;
+    document.addEventListener('DOMContentLoaded', () => {
+      const terminal = document.getElementById('terminal');
+      const themes = ['matrix','ubuntu','dark','light'];
+      let history = [], histIdx = 0;
 
-    // 1) Banner ASCII + Socials at top
-    const banner = `
+      // 1) Banner ASCII + Socials at top
+      const banner = `
 <pre class="ascii">
     __                          __             __                          
    /\\ \\                        /\\ \\__         /\\ \\                         
   _____ \\ \\ \\___       __       ___ \\ \\ ,_     __ \\ \\ \\'/   ____    __  __    
  /\\ '__\`\\\\ \\  _ \`\\   /'__\`\\   /' _ \`\\\\ \\ \\/   /'__\`\\\\ \\ , <  /\\_,\`\\ /\\ \\/\\ \\   
- \\ \\ \\L\\ \\ \\ \\ \\ \\/\\ \\L\\.\\_ /\\ \\/\\ \\\\ \\ \\_ /\\  __/ \\ \\ \\\\`\\\\/_/  /_\\ \\ \\_\\ \\  
-  \\ \\ ,__/ \\ \\_\\ \\_\\\\ \\__/\\.\\_\\\\ \\_\\ \\_\\\\ \\__/\\\\ \\____\\ \\ \\_\\ \\_/\\____\\\\/\\____ \\ 
-   \\ \\ \\/   \\/_/\\/_/ \\/__/\\/_/ \\/_/\\/_/ \\/__/ \\/____/  \\ \\/_/ \\/____/ \`/___/> \\
-    \\ \\_\\                                 /\\___/                       
-     \\/_/                                 \\/__/                        
+ \\ \\ \\L\\ \\ \\ \\ \\ \\/\\ \\L\\.\\_ /\\ \\/\\ \\\\ \\ \\_ /\\  __/ \\ \\ \\\\\\`\\\\/_/  /_\\ \\ \\_\\ \\  
+  \\ \\ ,__/ \\ \\_\\ \\_\\\\ \\__/\\.\\_\\\\ \\_\\ \\_\\\\ \\__/\\\\ \\____\\ \\ \\_\\ \\_\\/\\____\\\\/\\____ \\ 
+   \\ \\ \\/   \\/_/\\/_/ \\/__/\\/_/ \\/_/\\/_/ \\/__/ \\/____/  \\/_/\\/_/\\/____/ /___/> \\
+    \\ \\_\\                                                                 /\\___/ 
+     \\/_/                                                                 \\/__/  
 </pre>
 `;
 
-    const socialsBar = `
+      const socialsBar = `
 GitHub: <a href="https://github.com/phantekzy" target="_blank">github.com/phantekzy</a> |
 LinkedIn: <a href="https://linkedin.com/in/maini-lotfi" target="_blank">maini-lotfi</a> |
 X: <a href="https://x.com/mainilotfi"    target="_blank">@mainilotfi</a> |
@@ -81,9 +81,9 @@ YouTube: <a href="https://youtube.com/@phantekzy" target="_blank">@phantekzy</a>
 Email: <a href="mailto:mainilotfi@gmail.com">mainilotfi@gmail.com</a>
 `;
 
-    // 2) Content data
-    const data = {
-      about: `
+      // 2) Content data
+      const data = {
+        about: `
 ## About Me
 
 I am a dedicated web developer with proven experience delivering responsive, high‑performance applications. My toolkit includes:
@@ -95,8 +95,8 @@ I am a dedicated web developer with proven experience delivering responsive, hig
 - **Git** for collaborative version control
 
 I prioritize clean, modular code, performance optimization, and exceptional user experience.
-      `,
-      skills: `
+        `,
+        skills: `
 - HTML5
 - CSS3
 - JavaScript (ES6+)
@@ -106,119 +106,106 @@ I prioritize clean, modular code, performance optimization, and exceptional user
 - MySQL
 - Linux & Bash
 - Git & GitHub
-      `,
-      goals: `
+        `,
+        goals: `
 - Build modern full‑stack web applications  
 - Master advanced JavaScript frameworks & backend patterns  
 - Implement secure coding best practices  
 - Contribute to open source and community projects
-      `
-    };
+        `
+      };
 
-    // 3) Command definitions
-    const commands = {
-      help() {
-        print(`about | skills | projects | goals | theme [name] | socials | clear | exit`);
-      },
-      about() {
-        print(marked.parse(data.about));
-      },
-      skills() {
-        print(marked.parse(data.skills));
-      },
-      projects: async () => {
-        // clear screen to avoid stuck commands
-        terminal.innerHTML = '';
-        print('Fetching repositories from GitHub…');
-        try {
-          const res = await fetch('https://api.github.com/users/phantekzy/repos?sort=updated');
-          const repos = await res.json();
-          if (!Array.isArray(repos)) throw new Error('Bad response');
-          const md = repos.map(r =>
-            `- [${r.name}](${r.html_url}): ${r.description || 'No description'}`
-          ).join('\n');
-          print(marked.parse(md));
-        } catch (e) {
-          print(`Error fetching projects: ${e.message}`);
+      // 3) Command definitions
+      const commands = {
+        help() {
+          print(`about | skills | projects | goals | theme [name] | socials | clear | exit`);
+        },
+        about() {
+          print(marked.parse(data.about));
+        },
+        skills() {
+          print(marked.parse(data.skills));
+        },
+        projects: async () => {
+          terminal.innerHTML = '';
+          print(`Fetching repositories from GitHub…`);
+          try {
+            const res = await fetch('https://api.github.com/users/phantekzy/repos?sort=updated');
+            const repos = await res.json();
+            if (!Array.isArray(repos)) throw new Error('Bad response');
+            const md = repos.map(r =>
+              `- [${r.name}](${r.html_url}): ${r.description || 'No description'}`
+            ).join('\n');
+            print(marked.parse(md));
+          } catch (e) {
+            print(`Error fetching projects: ${e.message}`);
+          }
+        },
+        goals() {
+          print(marked.parse(data.goals));
+        },
+        theme(args) {
+          const t = args[1];
+          if (themes.includes(t)) {
+            document.body.className = 'theme-' + t;
+            print(`Theme set to ${t}`);
+          } else {
+            print(`Available themes: ${themes.join(', ')}`);
+          }
+        },
+        socials() {
+          print(socialsBar);
+        },
+        clear() {
+          terminal.innerHTML = '';
+        },
+        exit() {
+          print(`Goodbye!`);
         }
-      },
-      goals() {
-        print(marked.parse(data.goals));
-      },
-      theme(args) {
-        const t = args[1];
-        if (themes.includes(t)) {
-          document.body.className = 'theme-' + t;
-          print(`Theme set to ${t}`);
-        } else {
-          print(`Available themes: ${themes.join(', ')}`);
-        }
-      },
-      socials() {
-        print(socialsBar);
-      },
-      clear() {
-        terminal.innerHTML = '';
-      },
-      exit() {
-        print(`Goodbye!`);
+      };
+
+      // 4) Utilities
+      function print(html='') {
+        const d = document.createElement('div');
+        d.innerHTML = html;
+        terminal.appendChild(d);
+        terminal.scrollTop = terminal.scrollHeight;
       }
-    };
+      function newPrompt() {
+        const line = document.createElement('div'); line.className = 'line';
+        const p = document.createElement('span'); p.className = 'prompt'; p.textContent = '[phantekzy@portfolio ~]$ ';
+        const inp = document.createElement('input'); inp.id = 'cmdline'; inp.autocomplete = 'off';
+        line.append(p, inp); terminal.append(line); inp.focus(); addListeners(inp);
+      }
+      function addListeners(input) {
+        input.addEventListener('keydown', e => {
+          if (e.key==='Enter') {
+            const cmd = input.value.trim(); history.push(cmd); histIdx = history.length; input.disabled = true; execute(cmd);
+          }
+          else if (e.key==='ArrowUp' && histIdx>0)    input.value = history[--histIdx] || '';
+          else if (e.key==='ArrowDown') {
+            if (histIdx < history.length-1) input.value = history[++histIdx] || '';
+            else input.value = '';
+          }
+          else if (e.key==='Tab') {
+            e.preventDefault(); const val = input.value;
+            const matches = Object.keys(commands).filter(c=>c.startsWith(val));
+            if (matches.length===1) input.value = matches[0]+' ';
+          }
+        });
+      }
+      function execute(input) {
+        if (!input) return newPrompt(); const args = input.split(' '), cmd = args[0];
+        (commands[cmd]||(() => print(`command not found: ${cmd}`)))(args);
+        if (cmd!=='exit') newPrompt();
+      }
 
-    // 4) Utilities
-    function print(html='') {
-      const d = document.createElement('div');
-      d.innerHTML = html;
-      terminal.appendChild(d);
-      terminal.scrollTop = terminal.scrollHeight;
-    }
-    function newPrompt() {
-      const line = document.createElement('div');
-      line.className = 'line';
-      const p = document.createElement('span');
-      p.className = 'prompt';
-      p.textContent = '[phantekzy@portfolio ~]$ ';
-      const inp = document.createElement('input');
-      inp.id = 'cmdline'; inp.autocomplete = 'off';
-      line.append(p, inp);
-      terminal.append(line);
-      inp.focus();
-      addListeners(inp);
-    }
-    function addListeners(input) {
-      input.addEventListener('keydown', e => {
-        if (e.key==='Enter') {
-          const cmd = input.value.trim();
-          history.push(cmd); histIdx = history.length;
-          input.disabled = true;
-          execute(cmd);
-        }
-        else if (e.key==='ArrowUp' && histIdx>0)    input.value = history[--histIdx] || '';
-        else if (e.key==='ArrowDown') {
-          if (histIdx < history.length-1) input.value = history[++histIdx] || '';
-          else input.value = '';
-        }
-        else if (e.key==='Tab') {
-          e.preventDefault();
-          const val = input.value;
-          const matches = Object.keys(commands).filter(c=>c.startsWith(val));
-          if (matches.length===1) input.value = matches[0]+' ';
-        }
-      });
-    }
-    function execute(input) {
-      if (!input) return newPrompt();
-      const args = input.split(' '), cmd = args[0];
-      (commands[cmd]||(() => print(`command not found: ${cmd}`)))(args);
-      if (cmd!=='exit') newPrompt();
-    }
-
-    // 5) Bootstrap
-    print(banner);
-    print(socialsBar);
-    print(`<pre>Welcome to phantekzy's terminal portfolio. Type <code>help</code> to get started.</pre>`);
-    newPrompt();
-  });
+      // 5) Bootstrap
+      print(banner);
+      print(socialsBar);
+      print(`<pre>Welcome to phantekzy's terminal portfolio. Type <code>help</code> to get started.</pre>`);
+      newPrompt();
+    });
   </script>
 </body>
 </html>
