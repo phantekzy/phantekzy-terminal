@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lotfi Maini | Web Developer & Aspiring Cybersecurity Professional</title>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     :root { --bg: #000; --text: #33ff33; }
     .theme-matrix { --bg: #001100; --text: #00ff00; }
@@ -33,12 +32,12 @@
       flex: 1;
       font: inherit;
     }
+    @keyframes blink { 50% { opacity: 0; } }
     .cursor {
       width: 8px;
       background: var(--text);
       animation: blink 1s steps(1) infinite;
     }
-    @keyframes blink { 50% { opacity: 0; } }
     a { color: var(--text); text-decoration: underline; }
   </style>
 </head>
@@ -50,59 +49,66 @@
     let history = [], histIdx = 0;
 
     const data = {
-      about: `## About Me
+      about: `<h2>About Me</h2>
+<p><strong>Name:</strong> Lotfi Maini (phantekzy)</p>
+<p><strong>Location:</strong> Algiers, Algeria</p>
+<p>A self-taught Web Developer specializing in building scalable, responsive applications. Currently expanding skill set in cybersecurity fundamentals to complement development expertise.</p>`,
 
-I am **Lotfi Maini** (alias **phantekzy**), a dedicated self-taught Web Developer based in Algiers, Algeria. I specialize in building responsive, user-centric applications using modern technologies and frameworks. Currently, I am enhancing my expertise in cybersecurity fundamentals to broaden my professional scope.
-      
-- **Location:** Algiers, Algeria
-- **Education:** Civil Engineering (Incomplete) — transitioned to software development
-- **Languages:** JavaScript, PHP, SQL, Bash
-- **Frameworks/Libraries:** Node.js, React
-`,
+      skills: `<h2>Skills</h2>
+<ul>
+  <li>HTML5 & CSS3</li>
+  <li>JavaScript (ES6+)</li>
+  <li>Node.js & Express</li>
+  <li>React.js & Redux</li>
+  <li>PHP & MySQL</li>
+  <li>RESTful APIs & JSON</li>
+  <li>Linux (Arch Linux) & Shell Scripting</li>
+  <li>Git & GitHub</li>
+</ul>`,
 
-      skills: `- HTML5 & CSS3
-- JavaScript (ES6+)
-- Node.js & Express
-- React.js & Redux
-- PHP & MySQL
-- RESTful APIs & JSON
-- Linux (Arch Linux) & Shell Scripting
-- Version Control (Git & GitHub)
-`,
+      experience: `<h2>Experience</h2>
+<ul>
+  <li><strong>Personal Projects:</strong> Interactive terminal portfolio, React Weather App, PHP Contact Form.</li>
+  <li><strong>Open Source:</strong> Documentation contributions and community scripts.</li>
+  <li><strong>Freelance:</strong> Developed and deployed small business websites with CMS integration.</li>
+</ul>`,
 
-      experience: `- **Personal Projects**: Developed CLI-style portfolio, React weather app, and PHP contact form.
-- **Open Source**: Contributed to community documentation and scripts for cybersecurity tooling.
-- **Client Work (Freelance)**: Designed and deployed small business websites with CMS integration.
-`,
+      certifications: `<h2>Certifications</h2>
+<ul>
+  <li>freeCodeCamp: Responsive Web Design (2024)</li>
+  <li>freeCodeCamp: JavaScript Algorithms & Data Structures (2025)</li>
+  <li>IBM Cybersecurity Analyst Professional Certificate (In Progress)</li>
+</ul>`,
 
-      certifications: `- freeCodeCamp: Responsive Web Design (2024)
-- freeCodeCamp: JavaScript Algorithms & Data Structures (2025)
-- IBM Cybersecurity Analyst Professional Certificate (In Progress)
-`,
+      projects: `<h2>Projects</h2>
+<ul>
+  <li><strong>Terminal Portfolio:</strong> Browser-based CLI showcasing my profile and projects.</li>
+  <li><strong>React Weather App:</strong> Real-time data integration with clean UI.</li>
+  <li><strong>PHP Contact Form:</strong> Secure email handler for websites.</li>
+  <li><strong>Pentest Toolkit:</strong> Bash/Python scripts for network scanning (in development).</li>
+</ul>`,
 
-      projects: `- **Terminal Portfolio**: Interactive browser-based terminal showcasing my skills and projects.
-- **React Weather App**: Real-time weather data integration with clean UI.
-- **PHP Contact Form**: Secure and lightweight email handler for websites.
-- **Pentesting Toolkit**: Collection of Bash and Python scripts for network scanning (Learning project).
-`,
+      socials: `<h2>Connect</h2>
+<ul>
+  <li><a href="https://github.com/phantekzy" target="_blank">GitHub</a></li>
+  <li><a href="https://linkedin.com/in/maini-lotfi" target="_blank">LinkedIn</a></li>
+  <li><a href="https://x.com/mainilotfi" target="_blank">Twitter/X</a></li>
+  <li><a href="https://youtube.com/@phantekzy" target="_blank">YouTube</a></li>
+</ul>`,
 
-      socials: `- GitHub: <a href="https://github.com/phantekzy" target="_blank">github.com/phantekzy</a>
-- LinkedIn: <a href="https://linkedin.com/in/maini-lotfi" target="_blank">linkedin.com/in/maini-lotfi</a>
-- Twitter/X: <a href="https://x.com/mainilotfi" target="_blank">@mainilotfi</a>
-- YouTube: <a href="https://youtube.com/@phantekzy" target="_blank">/@phantekzy</a>
-`,
+      contact: `<h2>Contact</h2>
+<p>Email: <a href="mailto:mainilotfi@gmail.com">mainilotfi@gmail.com</a></p>
+<p>Resume: <a href="resume.pdf" download>Download PDF</a></p>`,
 
-      contact: `- 📧 Email: <a href="mailto:mainilotfi@gmail.com">mainilotfi@gmail.com</a>
-- 📄 Resume: <a href="resume.pdf" download>Download PDF</a>
-`,
-
-      system: `**OS:** Arch Linux (6.9.6)
-**Window Manager:** Hyprland
-**Shell:** Zsh + Starship
-**Editor:** Neovim
-**Terminal:** Alacritty
-**Browser:** Firefox
-`
+      system: `<h2>System Info</h2>
+<ul>
+  <li>OS: Arch Linux (6.9.6)</li>
+  <li>WM: Hyprland</li>
+  <li>Shell: Zsh + Starship</li>
+  <li>Editor: Neovim</li>
+  <li>Terminal: Alacritty</li>
+  <li>Browser: Firefox</li>
+</ul>`
     };
 
     function print(html = '') {
@@ -115,8 +121,9 @@ I am **Lotfi Maini** (alias **phantekzy**), a dedicated self-taught Web Develope
     function newPrompt() {
       const line = document.createElement('div'); line.className = 'line';
       const prompt = document.createElement('span'); prompt.className = 'prompt'; prompt.textContent = '[phantekzy@portfolio ~]$ ';
-      const input = document.createElement('input'); input.id = 'cmdline'; input.autocomplete = 'off';
-      line.append(prompt, input); terminal.append(line);
+      const input = document.createElement('input'); input.autocomplete = 'off'; input.className = 'cmdline';
+      line.append(prompt, input);
+      terminal.append(line);
       input.focus(); addListeners(input);
     }
 
@@ -140,30 +147,30 @@ I am **Lotfi Maini** (alias **phantekzy**), a dedicated self-taught Web Develope
     }
 
     const commands = {
-      help() { print(Object.keys(commands).join(' | ')); },
-      about() { print(marked.parse(data.about)); },
-      skills() { print(marked.parse(data.skills)); },
-      experience() { print(marked.parse(data.experience)); },
-      certifications() { print(marked.parse(data.certifications)); },
-      projects() { print(marked.parse(data.projects)); },
-      socials() { print(marked.parse(data.socials)); },
+      help() { print('<p>Available commands: ' + Object.keys(commands).join(', ') + '</p>'); },
+      about() { print(data.about); },
+      skills() { print(data.skills); },
+      experience() { print(data.experience); },
+      certifications() { print(data.certifications); },
+      projects() { print(data.projects); },
+      socials() { print(data.socials); },
       contact() { print(data.contact); },
-      system() { print(marked.parse(data.system)); },
+      system() { print(data.system); },
       clear() { terminal.innerHTML = ''; },
       theme(args) {
         const t = args[1];
         if (themes.includes(t)) {
           document.body.className = 'theme-' + t;
-          print('Theme set to ' + t);
+          print('<p>Theme set to ' + t + '</p>');
         } else {
-          print('Unknown theme: ' + t);
+          print('<p>Unknown theme: ' + t + '</p>');
         }
       },
-      exit() { print('Session terminated.'); }
+      exit() { print('<p>Session terminated.</p>'); }
     };
 
     // Initialize terminal
-    print('<pre>Welcome to Lotfi Maini\'s professional portfolio. Type <code>help</code> to view available commands.</pre>');
+    print('<h2>Welcome to my professional portfolio</h2><p>Type <code>help</code> to view available commands.</p>');
     newPrompt();
   </script>
 </body>
