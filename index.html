@@ -30,7 +30,7 @@
       height: 100%;
       padding: 30px;
       background: var(--terminal);
-      white-space: pre;
+      white-space: pre-wrap;
       overflow-y: auto;
     }
     .cursor {
@@ -92,75 +92,34 @@
     }
 
     async function runTerminal() {
-      await typeLine('[phantekzy@archlinux ~]$ fastfetch');
+      await typeLine('[phantekzy@portfolio ~]$ whoami');
       await delay(200);
 
-      insertBlock(`
-              -\`                   phantekzy@archlinux
-                  .o+\`                  -------------------------------
-                 \`ooo/                  Full Name : Maini Lotfi Abdelkader
-                \`+oooo:                 Alias     : phantekzy
-               \`+oooooo:                Location  : Bir Mourad Raïs, Algiers, Algeria
-               -+oooooo+:               Age       : 28 (born 1996-09-08)
-             \`/:-:++oooo+:              Role      : Elden Lord + Web Dev + CyberSec
-            \`/++++/+++++++:             Status    : Currently exploring ArchLinux
-           \`/++++++++++++++:            WM        : Hyprland 
-          \`/+++ooooooooooooo/\`         Shell     : Zsh + Starship
-         ./ooosssso++osssssso+\`         Editor    : Neovim (Lua)
-        .oossssso-\`\`\`\`/ossssss+\`        Terminal  : Alacritty
-       -osssssso.      :ssssssso.       Browser   : Firefox / W3M
-      :osssssss/        osssso+++.      Theme     : NerdFont + Gruvbox Dark
-     /ossssssss/        +ssssooo/-      Hobby     : AI, Linux, low-level code
-   \`/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering for Code 
-  \`+sso+:-\`                 \`.-/+oso:   Motto     : "Learn. Build. Play Dark Souls. Repeat."
- \`++:.                           \`-/+/
- .\`    `);
+      insertBlock(`Name     : Maini Lotfi Abdelkader\nAlias    : phantekzy\nLocation : Bir Mourad Raïs, Algiers, Algeria\nAge      : 28 (born 1996-09-08)\nMotto    : "Learn. Build. Play Dark Souls. Repeat."`);
 
-      await delay(200);
-      await typeLine('[phantekzy@archlinux ~]$ cd ~/skills/dev_stack/');
-      await delay(100);
-      await typeLine('[phantekzy@archlinux dev_stack]$ ls -la');
+      await typeLine('[phantekzy@portfolio ~]$ ls ~/skills');
+      insertBlock(`HTML5\nCSS3\nJavaScript\nPHP\nNode.js\nReact\nMySQL\nLinux\nBash\nGit`);
 
-      insertBlock(`
--rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 HTML5
--rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 CSS3
--rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 JavaScript
--rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 PHP
--rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 Node.js
--rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 React
--rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 MySQL
--rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 Linux
--rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 Bash
--rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 Git
-      `);
+      await typeLine('[phantekzy@portfolio ~]$ ls ~/projects');
+      insertBlock(`- Terminal Portfolio Website\n- CyberSec Tools Collection\n- React Weather App`);
 
-      await typeLine('[phantekzy@archlinux dev_stack]$ cd ~/projects/');
-      await delay(100);
-      await typeLine('[phantekzy@archlinux projects]$ ls');
-      insertBlock(`
--rw-r--r-- 1 phantekzy users   512 Jul 10 14:00 Terminal Portfolio Website
--rw-r--r-- 1 phantekzy users   408 Jul 10 14:01 CyberSec Tools Collection
--rw-r--r-- 1 phantekzy users   234 Jul 10 14:02 React Weather App
-      `);
+      await typeLine('[phantekzy@portfolio ~]$ ls ~/certifications');
+      insertBlock(`- FreeCodeCamp Responsive Web Design\n- FreeCodeCamp JavaScript Algorithms\n- IBM Cybersecurity Analyst (In Progress)`);
 
-      await delay(200);
-      await typeLine('[phantekzy@archlinux ~]$ cd ~/socials/');
-      await delay(100);
+      await typeLine('[phantekzy@portfolio ~]$ ls ~/goals');
+      insertBlock(`- Learn Web Development (Frontend & Backend)\n- Master Linux & CyberSecurity\n- Learn German\n- Get a remote job\n- Move to Europe`);
 
-      insertBlock('[ OK ] <a href="https://linkedin.com/in/maini-lotfi" target="_blank">LinkedIn</a> profile loaded');
-      insertBlock('[ OK ] <a href="https://x.com/mainilotfi" target="_blank">Twitter/X</a> feed detected');
-      insertBlock('[ OK ] <a href="https://github.com/phantekzy" target="_blank">GitHub</a> account active');
-      insertBlock('[ OK ] <a href="https://youtube.com/@phantekzy" target="_blank">YouTube</a> channel online');
+      await typeLine('[phantekzy@portfolio ~]$ cd ~/contact');
+      insertBlock('[ OK ] <a href="mailto:mainilotfi@gmail.com">mainilotfi@gmail.com</a>');
 
-      await delay(200);
-      await typeLine('[phantekzy@archlinux socials]$ mail -s "Contact" mainilotfi@gmail.com');
-      insertBlock('[ INFO ] Opening email client... <a href="mailto:mainilotfi@gmail.com">mainilotfi@gmail.com</a>');
+      await typeLine('[phantekzy@portfolio ~]$ cd ~/socials');
+      insertBlock('[ OK ] <a href="https://linkedin.com/in/maini-lotfi" target="_blank">LinkedIn</a>');
+      insertBlock('[ OK ] <a href="https://x.com/mainilotfi" target="_blank">Twitter/X</a>');
+      insertBlock('[ OK ] <a href="https://github.com/phantekzy" target="_blank">GitHub</a>');
+      insertBlock('[ OK ] <a href="https://youtube.com/@phantekzy" target="_blank">YouTube</a>');
 
-      await typeLine('[phantekzy@archlinux ~]$ uname -a');
-      insertBlock('Linux archlinux 6.9.6-arch1-1 x86_64 GNU/Linux');
-
-      await typeLine('[phantekzy@archlinux ~]$ exit');
-      insertBlock('logout\n\n███████████ Process terminated successfully.\n\nThank you for visiting PHANTEKZY\'s Arch terminal');
+      await typeLine('[phantekzy@portfolio ~]$ logout');
+      insertBlock('\nGoodbye. Thank you for visiting my terminal portfolio.');
 
       const cursor = document.createElement('span');
       cursor.className = 'cursor';
