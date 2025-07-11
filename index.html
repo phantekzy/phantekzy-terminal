@@ -7,130 +7,117 @@
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --bg: #0d0d0d;
-      --terminal: #111;
-      --text: #00ff00;
-    }
-    .light-mode {
-      --bg: #f4f4f4;
-      --terminal: #e0e0e0;
-      --text: #0c0c0c;
+      --bg: #000;
+      --terminal: #000;
+      --text: #33ff33;
+      --cursor: #33ff33;
     }
 
     html, body {
       height: 100%;
       margin: 0;
-      padding: 0;
       background: var(--bg);
       color: var(--text);
       font-family: 'Fira Code', monospace;
+      overflow: hidden;
     }
+
     #terminal {
       width: 100%;
-      height: 100%;
-      padding: 30px;
+      height: 100vh;
+      padding: 20px;
       background: var(--terminal);
       white-space: pre-wrap;
       overflow-y: auto;
+      box-sizing: border-box;
     }
+
     .cursor {
       display: inline-block;
-      width: 8px;
-      margin-left: 2px;
-      background: var(--text);
-      animation: blink 0.7s steps(1) infinite;
-      vertical-align: bottom;
+      width: 10px;
+      height: 1em;
+      margin-left: 5px;
+      background: var(--cursor);
+      animation: blink 1s step-start infinite;
     }
+
     a {
       color: var(--text);
       text-decoration: underline;
     }
+
     @keyframes blink {
-      0%,100% { opacity:1; }
-      50% { opacity:0; }
-    }
-    #toggleMode {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      padding: 5px 10px;
-      font-family: 'Fira Code', monospace;
-      cursor: pointer;
-      background: var(--terminal);
-      color: var(--text);
-      border: 1px solid var(--text);
+      50% { opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <button id="toggleMode">Toggle Theme</button>
   <div id="terminal"></div>
-
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
-    const term = document.getElementById('terminal');
+    const terminal = document.getElementById('terminal');
 
-    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    const delay = (ms) => new Promise(res => setTimeout(res, ms));
     const typeLine = (line) => {
       return new Promise(resolve => {
-        const d = document.createElement('div');
-        term.appendChild(d);
-        new Typed(d, {
+        const div = document.createElement('div');
+        terminal.appendChild(div);
+        new Typed(div, {
           strings: [line],
           typeSpeed: 20,
           showCursor: false,
           onComplete: () => resolve()
         });
-        term.scrollTop = term.scrollHeight;
       });
     };
+
     const insertBlock = (text) => {
       const pre = document.createElement('pre');
       pre.innerHTML = text;
-      term.appendChild(pre);
-      term.scrollTop = term.scrollHeight;
-    }
+      terminal.appendChild(pre);
+      terminal.scrollTop = terminal.scrollHeight;
+    };
 
     async function runTerminal() {
-      await typeLine('[phantekzy@portfolio ~]$ whoami');
-      await delay(200);
+      await typeLine('[phantekzy@linux ~]$ whoami');
+      insertBlock(`Name     : Maini Lotfi Abdelkader\nAlias    : phantekzy\nLocation : Algiers, Algeria\nAge      : 28\nMotto    : "Learn. Build. Play Dark Souls. Repeat."`);
 
-      insertBlock(`Name     : Maini Lotfi Abdelkader\nAlias    : phantekzy\nLocation : Bir Mourad Raïs, Algiers, Algeria\nAge      : 28 (born 1996-09-08)\nMotto    : "Learn. Build. Play Dark Souls. Repeat."`);
+      await typeLine('[phantekzy@linux ~]$ cat about.txt');
+      insertBlock(`Self-taught web developer transitioning into cybersecurity. Passionate about Linux, open-source, and making an impact through code.`);
 
-      await typeLine('[phantekzy@portfolio ~]$ ls ~/skills');
-      insertBlock(`HTML5\nCSS3\nJavaScript\nPHP\nNode.js\nReact\nMySQL\nLinux\nBash\nGit`);
+      await typeLine('[phantekzy@linux ~]$ ls skills/');
+      insertBlock(`- HTML5\n- CSS3\n- JavaScript\n- PHP\n- Node.js\n- React\n- MySQL\n- Git & GitHub\n- Bash & Linux`);
 
-      await typeLine('[phantekzy@portfolio ~]$ ls ~/projects');
-      insertBlock(`- Terminal Portfolio Website\n- CyberSec Tools Collection\n- React Weather App`);
+      await typeLine('[phantekzy@linux ~]$ ls projects/');
+      insertBlock(`- Terminal Portfolio Website\n- CyberSec Tools Collection\n- React Weather App\n- Personal Blog (In Progress)`);
 
-      await typeLine('[phantekzy@portfolio ~]$ ls ~/certifications');
-      insertBlock(`- FreeCodeCamp Responsive Web Design\n- FreeCodeCamp JavaScript Algorithms\n- IBM Cybersecurity Analyst (In Progress)`);
+      await typeLine('[phantekzy@linux ~]$ cat certifications.txt');
+      insertBlock(`- freeCodeCamp: Responsive Web Design\n- freeCodeCamp: JavaScript Algorithms\n- IBM Cybersecurity Analyst (In Progress)`);
 
-      await typeLine('[phantekzy@portfolio ~]$ ls ~/goals');
-      insertBlock(`- Learn Web Development (Frontend & Backend)\n- Master Linux & CyberSecurity\n- Learn German\n- Get a remote job\n- Move to Europe`);
+      await typeLine('[phantekzy@linux ~]$ cat experience.txt');
+      insertBlock(`Currently learning and building real-world projects.\nVolunteered for small freelance websites (HTML/CSS).\nActively participating in CTF challenges for cybersecurity.`);
 
-      await typeLine('[phantekzy@portfolio ~]$ cd ~/contact');
-      insertBlock('[ OK ] <a href="mailto:mainilotfi@gmail.com">mainilotfi@gmail.com</a>');
+      await typeLine('[phantekzy@linux ~]$ cat goals.txt');
+      insertBlock(`1. Master Fullstack Development\n2. Specialize in CyberSecurity (Linux, Pentesting, Forensics)\n3. Get a Remote Job\n4. Move to Germany\n5. Build Open Source Tools`);
 
-      await typeLine('[phantekzy@portfolio ~]$ cd ~/socials');
-      insertBlock('[ OK ] <a href="https://linkedin.com/in/maini-lotfi" target="_blank">LinkedIn</a>');
-      insertBlock('[ OK ] <a href="https://x.com/mainilotfi" target="_blank">Twitter/X</a>');
-      insertBlock('[ OK ] <a href="https://github.com/phantekzy" target="_blank">GitHub</a>');
-      insertBlock('[ OK ] <a href="https://youtube.com/@phantekzy" target="_blank">YouTube</a>');
+      await typeLine('[phantekzy@linux ~]$ cd contact/');
+      insertBlock('[ OK ] Email   : <a href="mailto:mainilotfi@gmail.com">mainilotfi@gmail.com</a>');
+      insertBlock('[ OK ] LinkedIn: <a href="https://linkedin.com/in/maini-lotfi" target="_blank">linkedin.com/in/maini-lotfi</a>');
 
-      await typeLine('[phantekzy@portfolio ~]$ logout');
-      insertBlock('\nGoodbye. Thank you for visiting my terminal portfolio.');
+      await typeLine('[phantekzy@linux ~]$ cd socials/');
+      insertBlock('[ OK ] GitHub  : <a href="https://github.com/phantekzy" target="_blank">github.com/phantekzy</a>');
+      insertBlock('[ OK ] Twitter : <a href="https://x.com/mainilotfi" target="_blank">x.com/mainilotfi</a>');
+      insertBlock('[ OK ] YouTube : <a href="https://youtube.com/@phantekzy" target="_blank">youtube.com/@phantekzy</a>');
+
+      await typeLine('[phantekzy@linux ~]$ logout');
+      insertBlock('Goodbye. Thank you for visiting my terminal portfolio.');
 
       const cursor = document.createElement('span');
       cursor.className = 'cursor';
-      term.lastChild.appendChild(cursor);
+      terminal.appendChild(cursor);
     }
 
     runTerminal();
-
-    document.getElementById('toggleMode').addEventListener('click', () => {
-      document.body.classList.toggle('light-mode');
-    });
   </script>
 </body>
 </html>
