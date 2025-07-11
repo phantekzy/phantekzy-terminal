@@ -6,119 +6,172 @@
   <title>phantekzy | Terminal Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet"/>
   <style>
+    :root {
+      --bg: #0d0d0d;
+      --terminal: #111;
+      --text: #00ff00;
+    }
+    .light-mode {
+      --bg: #f4f4f4;
+      --terminal: #e0e0e0;
+      --text: #0c0c0c;
+    }
+
     html, body {
       height: 100%;
       margin: 0;
       padding: 0;
+      background: var(--bg);
+      color: var(--text);
       font-family: 'Fira Code', monospace;
-      background: #0d0d0d;
-      color: #00ff00;
     }
     #terminal {
       width: 100%;
       height: 100%;
       padding: 30px;
-      background: #111;
-      white-space: pre-wrap;
+      background: var(--terminal);
+      white-space: pre;
       overflow-y: auto;
-    }
-    a {
-      color: #00ff00;
-      text-decoration: underline;
     }
     .cursor {
       display: inline-block;
       width: 8px;
       margin-left: 2px;
-      background: #00ff00;
+      background: var(--text);
       animation: blink 0.7s steps(1) infinite;
       vertical-align: bottom;
+    }
+    a {
+      color: var(--text);
+      text-decoration: underline;
     }
     @keyframes blink {
       0%,100% { opacity:1; }
       50% { opacity:0; }
     }
+    #toggleMode {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      padding: 5px 10px;
+      font-family: 'Fira Code', monospace;
+      cursor: pointer;
+      background: var(--terminal);
+      color: var(--text);
+      border: 1px solid var(--text);
+    }
   </style>
 </head>
 <body>
+  <button id="toggleMode">Toggle Theme</button>
   <div id="terminal"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
     const term = document.getElementById('terminal');
-    const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-    async function typeLine(text, delay = 20) {
-      const line = document.createElement('div');
-      term.appendChild(line);
-      await new Promise(r => new Typed(line, {
-        strings: [text],
-        typeSpeed: delay,
-        showCursor: false,
-        onComplete: r
-      }));
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    const typeLine = (line) => {
+      return new Promise(resolve => {
+        const d = document.createElement('div');
+        term.appendChild(d);
+        new Typed(d, {
+          strings: [line],
+          typeSpeed: 20,
+          showCursor: false,
+          onComplete: () => resolve()
+        });
+        term.scrollTop = term.scrollHeight;
+      });
+    };
+    const insertBlock = (text) => {
+      const pre = document.createElement('pre');
+      pre.innerHTML = text;
+      term.appendChild(pre);
       term.scrollTop = term.scrollHeight;
-      await sleep(100);
     }
 
-    async function insertBlock(text) {
-      const block = document.createElement('pre');
-      block.textContent = text;
-      term.appendChild(block);
-      term.scrollTop = term.scrollHeight;
-      await sleep(200);
-    }
-
-    async function run() {
+    async function runTerminal() {
       await typeLine('[phantekzy@archlinux ~]$ fastfetch');
+      await delay(200);
 
-      await insertBlock(`
-              -` + "`" + `                   phantekzy@archlinux
-                  .o+` + "`" + `                  -------------------------------
+      insertBlock(`
+              -\`                   phantekzy@archlinux
+                  .o+\`                  -------------------------------
                  \`ooo/                  Full Name : Maini Lotfi Abdelkader
                 \`+oooo:                 Alias     : phantekzy
-               \`+oooooo:                Location  : Bir Mourad Raïs, Algiers
+               \`+oooooo:                Location  : Bir Mourad Raïs, Algiers, Algeria
                -+oooooo+:               Age       : 28 (born 1996-09-08)
              \`/:-:++oooo+:              Role      : Elden Lord + Web Dev + CyberSec
-            \`/++++/+++++++:             Status    : Exploring ArchLinux
+            \`/++++/+++++++:             Status    : Currently exploring ArchLinux
            \`/++++++++++++++:            WM        : Hyprland 
-          \`/+++ooooooooooooo/\         Shell     : Zsh + Starship
-         ./ooosssso++osssssso+         Editor    : Neovim (Lua)
-        .oossssso-\`\`\`\`/ossssss+        Terminal  : Alacritty
+          \`/+++ooooooooooooo/\`         Shell     : Zsh + Starship
+         ./ooosssso++osssssso+\`         Editor    : Neovim (Lua)
+        .oossssso-\`\`\`\`/ossssss+\`        Terminal  : Alacritty
        -osssssso.      :ssssssso.       Browser   : Firefox / W3M
       :osssssss/        osssso+++.      Theme     : NerdFont + Gruvbox Dark
      /ossssssss/        +ssssooo/-      Hobby     : AI, Linux, low-level code
-   \`/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering
-  \`+sso+:-\`                 \`.-/+oso:   Motto     : Learn. Build. Repeat.
+   \`/ossssso+/:-        -:/+osssso+-    Fun Fact  : Dropped Civil Engineering for Code 
+  \`+sso+:-\`                 \`.-/+oso:   Motto     : "Learn. Build. Play Dark Souls. Repeat."
  \`++:.                           \`-/+/
- .`);
+ .\`    `);
 
-      await typeLine('[phantekzy@archlinux ~]$ cd ~/skills/');
-      await typeLine('[phantekzy@archlinux skills]$ ls -la');
-      await insertBlock(`- HTML5\n- CSS3\n- JavaScript\n- PHP\n- Node.js\n- React\n- MySQL`);
+      await delay(200);
+      await typeLine('[phantekzy@archlinux ~]$ cd ~/skills/dev_stack/');
+      await delay(100);
+      await typeLine('[phantekzy@archlinux dev_stack]$ ls -la');
 
-      await typeLine('[phantekzy@archlinux ~]$ cd ~/projects/');
-      await typeLine('[phantekzy@archlinux projects]$ ls -la');
-      await insertBlock(`- dark-souls-themed-blog\n- arch-config-installer\n- react-chat-terminal-ui`);
+      insertBlock(`
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 HTML5
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 CSS3
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 JavaScript
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 PHP
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 Node.js
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 React
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 MySQL
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 Linux
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 Bash
+-rw-r--r-- 1 phantekzy users   13 Jul 01 20:25 Git
+      `);
 
+      await typeLine('[phantekzy@archlinux dev_stack]$ cd ~/projects/');
+      await delay(100);
+      await typeLine('[phantekzy@archlinux projects]$ ls');
+      insertBlock(`
+-rw-r--r-- 1 phantekzy users   512 Jul 10 14:00 Terminal Portfolio Website
+-rw-r--r-- 1 phantekzy users   408 Jul 10 14:01 CyberSec Tools Collection
+-rw-r--r-- 1 phantekzy users   234 Jul 10 14:02 React Weather App
+      `);
+
+      await delay(200);
       await typeLine('[phantekzy@archlinux ~]$ cd ~/socials/');
-      await insertBlock('[ OK ] LinkedIn → <a href="https://linkedin.com/in/maini-lotfi" target="_blank">linkedin.com/in/maini-lotfi</a>');
-      await insertBlock('[ OK ] Twitter/X → <a href="https://x.com/mainilotfi" target="_blank">x.com/mainilotfi</a>');
-      await insertBlock('[ OK ] GitHub → <a href="https://github.com/phantekzy" target="_blank">github.com/phantekzy</a>');
-      await insertBlock('[ OK ] YouTube → <a href="https://youtube.com/@phantekzy" target="_blank">youtube.com/@phantekzy</a>');
+      await delay(100);
 
-      await typeLine('[phantekzy@archlinux ~]$ echo "Contact me at mainilotfi@gmail.com"');
-      await insertBlock('📬 Email: mainilotfi@gmail.com');
+      insertBlock('[ OK ] <a href="https://linkedin.com/in/maini-lotfi" target="_blank">LinkedIn</a> profile loaded');
+      insertBlock('[ OK ] <a href="https://x.com/mainilotfi" target="_blank">Twitter/X</a> feed detected');
+      insertBlock('[ OK ] <a href="https://github.com/phantekzy" target="_blank">GitHub</a> account active');
+      insertBlock('[ OK ] <a href="https://youtube.com/@phantekzy" target="_blank">YouTube</a> channel online');
+
+      await delay(200);
+      await typeLine('[phantekzy@archlinux socials]$ mail -s "Contact" mainilotfi@gmail.com');
+      insertBlock('[ INFO ] Opening email client... <a href="mailto:mainilotfi@gmail.com">mainilotfi@gmail.com</a>');
+
+      await typeLine('[phantekzy@archlinux ~]$ uname -a');
+      insertBlock('Linux archlinux 6.9.6-arch1-1 x86_64 GNU/Linux');
 
       await typeLine('[phantekzy@archlinux ~]$ exit');
-      await insertBlock('logout\n\n███████████ Process terminated successfully.\n\nThank you for visiting PHANTEKZY\'s Arch terminal. See you soon!');
+      insertBlock('logout\n\n███████████ Process terminated successfully.\n\nThank you for visiting PHANTEKZY\'s Arch terminal');
 
       const cursor = document.createElement('span');
       cursor.className = 'cursor';
       term.lastChild.appendChild(cursor);
     }
 
-    run();
+    runTerminal();
+
+    document.getElementById('toggleMode').addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+    });
   </script>
 </body>
 </html>
