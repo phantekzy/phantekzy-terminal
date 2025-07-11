@@ -46,12 +46,12 @@
     a { color: var(--text); text-decoration: underline; }
   </style>
 </head>
-<body class="theme-ubuntu"><!-- use ubuntu for debugging -->
+<body class="theme-matrix">
   <div id="terminal"></div>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('Terminal script starting…');  // check your browser console
+      console.log('⚙️ Terminal script starting…');
 
       const terminal = document.getElementById('terminal');
       const themes = ['matrix', 'ubuntu'];
@@ -81,23 +81,23 @@ I focus on clean, maintainable code, performance, and seamless user experiences.
 
       const commands = {
         help() {
-          print(\`about | projects | goals | theme [name] | socials | clear | exit\`);
+          print(`about | projects | goals | theme [name] | socials | clear | exit`);
         },
         about() {
           print(marked.parse(data.about));
         },
-        projects: async function() {
-          print('Fetching repositories from GitHub…');
+        projects: async () => {
+          print(`Fetching repositories from GitHub…`);
           try {
             const res = await fetch('https://api.github.com/users/phantekzy/repos?sort=updated');
             const repos = await res.json();
             if (!Array.isArray(repos)) throw new Error('Bad response');
             const md = repos.map(r =>
-              \`- [\${r.name}](\${r.html_url}): \${r.description || 'No description'}\`
-            ).join('\\n');
+              `- [${r.name}](${r.html_url}): ${r.description || 'No description'}`
+            ).join('\n');
             print(marked.parse(md));
           } catch (e) {
-            print('Error fetching projects: ' + e.message);
+            print(`Error fetching projects: ${e.message}`);
           }
         },
         goals() {
@@ -107,19 +107,19 @@ I focus on clean, maintainable code, performance, and seamless user experiences.
           const name = args[1];
           if (themes.includes(name)) {
             document.body.className = 'theme-' + name;
-            print('Theme set to ' + name);
+            print(`Theme set to ${name}`);
           } else {
-            print('Available themes: ' + themes.join(', '));
+            print(`Available themes: ${themes.join(', ')}`);
           }
         },
         socials() {
-          print(\`GitHub: <a href="https://github.com/phantekzy" target="_blank">github.com/phantekzy</a>\`);
+          print(`GitHub: <a href="https://github.com/phantekzy" target="_blank">github.com/phantekzy</a>`);
         },
         clear() {
           terminal.innerHTML = '';
         },
         exit() {
-          print('Goodbye!');
+          print(`Goodbye!`);
         }
       };
 
@@ -175,12 +175,12 @@ I focus on clean, maintainable code, performance, and seamless user experiences.
         if (!input) return newPrompt();
         const args = input.split(' ');
         const cmd = args[0];
-        (commands[cmd] || (() => print('command not found: ' + cmd)))(args);
+        (commands[cmd] || (() => print(`command not found: ${cmd}`)))(args);
         if (cmd !== 'exit') newPrompt();
       }
 
-      // kick things off
-      print('<pre>Welcome to phantekzy\\'s terminal portfolio. Type <code>help</code> to get started.</pre>');
+      // Kickoff
+      print(`<pre>Welcome to phantekzy's terminal portfolio. Type <code>help</code> to get started.</pre>`);
       newPrompt();
     });
   </script>
