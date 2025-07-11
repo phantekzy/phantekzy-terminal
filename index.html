@@ -13,78 +13,192 @@
     }
     .theme-ubuntu { --bg: #300a24; --text: #ff6600; }
     .theme-matrix { --bg: #001100; --text: #00ff00; }
-    body { margin:0; height:100vh; background:var(--bg); color:var(--text); font-family:'Fira Code', monospace; }
-    #terminal { box-sizing:border-box; padding:20px; height:100%; overflow-y:auto; }
-    .line { display:flex; }
-    .prompt { flex-shrink:0; }
-    #cmdline { background:transparent; border:none; outline:none; color:inherit; flex:1; font:inherit; }
-    .cursor { width:8px; background:var(--text); animation:blink .8s steps(1) infinite; }
-    @keyframes blink {50%{opacity:0}}
-    a { color:var(--text); text-decoration:underline; }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Fira Code', monospace;
+    }
+    #terminal {
+      box-sizing: border-box;
+      padding: 20px;
+      height: 100%;
+      overflow-y: auto;
+    }
+    .line { display: flex; }
+    .prompt { flex-shrink: 0; }
+    #cmdline {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: inherit;
+      flex: 1;
+      font: inherit;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    .cursor {
+      width: 8px;
+      background: var(--text);
+      animation: blink .8s steps(1) infinite;
+    }
+    a { color: var(--text); text-decoration: underline; }
   </style>
 </head>
 <body class="theme-matrix">
   <div id="terminal"></div>
+
   <script>
     const terminal = document.getElementById('terminal');
-    const themes = ['matrix','ubuntu'];
+    const themes = ['matrix', 'ubuntu'];
     let history = [], histIdx = 0;
+
+    // Content data
     const data = {
-      about: '## About Me\nSelf-taught developer transitioning into CyberSec. Passionate about Linux and open source.',
-      skills: '- HTML5\n- CSS3\n- JavaScript\n- PHP\n- Node.js\n- React\n- MySQL\n- Linux\n- Bash\n- Git',
-      projects: '- **Terminal Portfolio**: This site!\n- **CyberSec Tools**: Collection of pentesting scripts\n- **React Weather App**: Live forecast app',
-      certifications: '- freeCodeCamp: Responsive Web Design\n- freeCodeCamp: JS Algorithms\n- IBM Cybersecurity Analyst (In Progress)',
-      goals: '1. Master Fullstack\n2. Specialize in CyberSec\n3. Learn German\n4. Get remote job\n5. Move to Europe'
+      about: `
+## About Me
+
+I am a results-oriented web developer specializing in responsive, user-centric applications. My core skill set includes:
+
+- HTML5 & CSS3
+- Modern JavaScript (ES6+), React, Node.js
+- PHP & MySQL
+- Linux environments, Bash scripting
+- Git version control
+
+I focus on clean, maintainable code, performance, and seamless user experiences.
+      `,
+      goals: `
+- Build modern full-stack web applications
+- Deepen expertise in JavaScript and backend frameworks
+- Learn secure coding practices and web security
+- Contribute to open source projects
+      `
     };
-    function print(html=''){
-      const div = document.createElement('div'); div.innerHTML = html; terminal.appendChild(div);
+
+    // Command definitions
+    const commands = {
+      help() {
+        print(`
+about | projects | goals | theme [name] | socials | clear | exit
+        `);
+      },
+
+      about() {
+        print(marked.parse(data.about));
+      },
+
+      projects: async function() {
+        print('Fetching repositories from GitHub...');
+        try {
+          const res = await fetch('https://api.github.com/users/phantekzy/repos?sort=updated');
+          const repos = await res.json();
+          if (!Array.isArray(repos)) throw new Error('Unexpected response');
+          const md = repos.map(r =>
+            \`- [\${r.name}](\${r.html_url}): \${r.description || 'No description'}\`
+          ).join('\\n');
+          print(marked.parse(md));
+        } catch (err) {
+          print('Error fetching projects: ' + err.message);
+        }
+      },
+
+      goals() {
+        print(marked.parse(data.goals));
+      },
+
+      theme(args) {
+        const name = args[1];
+        if (themes.includes(name)) {
+          document.body.className = 'theme-' + name;
+          print('Theme set to ' + name);
+        } else {
+          print('Available themes: ' + themes.join(', '));
+        }
+      },
+
+      socials() {
+        print(\`
+GitHub: <a href="https://github.com/phantekzy" target="_blank">github.com/phantekzy</a>
+        \`);
+      },
+
+      clear() {
+        terminal.innerHTML = '';
+      },
+
+      exit() {
+        print('Goodbye!');
+      }
+    };
+
+    // Utility: render HTML and scroll
+    function print(html = '') {
+      const div = document.createElement('div');
+      div.innerHTML = html;
+      terminal.appendChild(div);
       terminal.scrollTop = terminal.scrollHeight;
     }
-    function newPrompt(){
-      const line = document.createElement('div'); line.className='line';
-      const prompt = document.createElement('span'); prompt.className='prompt'; prompt.textContent='[phantekzy@portfolio ~]$ ';
-      const input = document.createElement('input'); input.id='cmdline'; input.autocomplete='off';
-      line.append(prompt,input); terminal.append(line);
-      input.focus(); addListeners(input);
+
+    // Create a new prompt line
+    function newPrompt() {
+      const line = document.createElement('div');
+      line.className = 'line';
+
+      const prompt = document.createElement('span');
+      prompt.className = 'prompt';
+      prompt.textContent = '[phantekzy@portfolio ~]$ ';
+
+      const input = document.createElement('input');
+      input.id = 'cmdline';
+      input.autocomplete = 'off';
+
+      line.append(prompt, input);
+      terminal.append(line);
+      input.focus();
+      addListeners(input);
     }
-    function addListeners(input){
-      input.addEventListener('keydown', e=>{
-        if(e.key==='Enter'){
-          const cmd = input.value.trim(); history.push(cmd); histIdx=history.length;
-          input.disabled=true; execute(cmd);
-        } else if(e.key==='ArrowUp'){ if(histIdx>0){ histIdx--; input.value=history[histIdx]; }}
-        else if(e.key==='ArrowDown'){ if(histIdx<history.length-1){ histIdx++; input.value=history[histIdx]; } else input.value=''; }
-        else if(e.key==='Tab'){ e.preventDefault(); autocomplete(input); }
+
+    // Handle keyboard input
+    function addListeners(input) {
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          const cmd = input.value.trim();
+          history.push(cmd);
+          histIdx = history.length;
+          input.disabled = true;
+          execute(cmd);
+        } else if (e.key === 'ArrowUp') {
+          if (histIdx > 0) input.value = history[--histIdx] || '';
+        } else if (e.key === 'ArrowDown') {
+          if (histIdx < history.length - 1) input.value = history[++histIdx] || '';
+          else input.value = '';
+        } else if (e.key === 'Tab') {
+          e.preventDefault();
+          autocomplete(input);
+        }
       });
     }
-    function autocomplete(input){
-      const cmds = Object.keys(commands);
-      const val = input.value; const matches = cmds.filter(c=>c.startsWith(val));
-      if(matches.length===1) input.value=matches[0]+' ';
+
+    // Simple autocomplete
+    function autocomplete(input) {
+      const val = input.value;
+      const matches = Object.keys(commands).filter(c => c.startsWith(val));
+      if (matches.length === 1) input.value = matches[0] + ' ';
     }
-    const commands = {
-      help(){ print(Object.keys(commands).join(' | ')); },
-      about(){ print(marked.parse(data.about)); },
-      skills(){ print(marked.parse(data.skills)); },
-      projects(){ print(marked.parse(data.projects)); },
-      certifications(){ print(marked.parse(data.certifications)); },
-      goals(){ print(marked.parse(data.goals)); },
-      clear(){ terminal.innerHTML=''; },
-      theme(args){ const t=args[1]; if(themes.includes(t)){ document.body.className='theme-'+t; print('Theme set to '+t); } else print('Unknown theme'); },
-      resume(){ print('<a href="resume.pdf" download>Download Resume</a>'); },
-      contact(){ print('Email: <a href="mailto:mainilotfi@gmail.com">mainilotfi@gmail.com</a>'); },
-      socials(){ print('GitHub | LinkedIn | X | YouTube'); },
-      exit(){ print('Goodbye!'); }
-    };
-    function execute(input){
-      if(!input) return newPrompt();
-      const args = input.split(' '), cmd=args[0];
-      if(commands[cmd]) commands[cmd](args);
-      else print(`command not found: ${cmd}`);
-      if(cmd!=='exit') newPrompt();
+
+    // Execute a command
+    function execute(input) {
+      if (!input) return newPrompt();
+      const args = input.split(' ');
+      const cmd = args[0];
+      (commands[cmd] || (() => print(\`command not found: \${cmd}\`)))(args);
+      if (cmd !== 'exit') newPrompt();
     }
-    // Start
-    print('<pre>Welcome to phantekzy\'s terminal portfolio. Type <code>help</code> to get started.</pre>');
+
+    // Initial welcome
+    print('<pre>Welcome to phantekzy\\'s terminal portfolio. Type <code>help</code> to get started.</pre>');
     newPrompt();
   </script>
 </body>
