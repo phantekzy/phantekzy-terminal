@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>phantekzy | Full-Stack Portfolio</title>
+  <title>phantekzy | Full-Stack Terminal Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
@@ -22,131 +22,72 @@
     .cursor { width:8px; background:var(--text); animation:blink .8s steps(1) infinite; }
     @keyframes blink {50%{opacity:0}}
     a { color:var(--text); text-decoration:underline; }
-    #splash { position:fixed; top:0; left:0; right:0; bottom:0; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; }
-    #splash h1 { margin-bottom: 1rem; }
-    #splash button { margin: 0.5rem; padding:0.5rem 1rem; font:inherit; cursor:pointer; }
   </style>
 </head>
-<body>
-  <div id="splash">
-    <h1>Welcome / Bienvenue / مرحباً</h1>
-    <p>Select language:</p>
-    <button data-lang="en">English</button>
-    <button data-lang="fr">Français</button>
-    <button data-lang="ar">العربية</button>
-    <p>Select theme:</p>
-    <button data-theme="matrix">🌑 Matrix</button>
-    <button data-theme="ubuntu">🟠 Ubuntu</button>
-    <button data-theme="light">🔆 Light</button>
-  </div>
-  <div id="terminal" hidden></div>
+<body class="theme-matrix">
+  <div id="terminal"></div>
   <script>
     // Translations
     const translations = {
-      en: {
-        about: `## About Me
-
-Hi, I'm **Maini Lotfi Abdelkader** ("phantekzy"), a Full-Stack Web Developer based in Algiers. I build scalable, maintainable web applications using modern JavaScript (Node.js, React), PHP, and MySQL. Passionate about clean code, performant UIs, and user-centered design, I thrive on turning ideas into production-ready products.`,
-        skills: `- HTML5 ★★★★★
-- CSS3 ★★★★☆
-- JavaScript/ES6 ★★★★☆
-- Node.js ★★★★☆
-- React/Redux ★★★★☆
-- PHP/Laravel ★★★★☆
-- MySQL/PostgreSQL ★★★☆☆
-- Git & CI/CD ★★★★☆`,
-        projects: `- **Terminal Portfolio**: This interactive portfolio built with vanilla JS & marked.js
-- **React Weather App**: Responsive weather dashboard fetching live API data
-- **PHP Contact Form**: Secure form handler with server-side validation`,
-        certifications: `- freeCodeCamp: Responsive Web Design
-- freeCodeCamp: JavaScript Algorithms
-- Microsoft: Azure Fundamentals`,
-        contact: `📨 Email: <a href=\"mailto:mainilotfi@gmail.com\">mainilotfi@gmail.com</a>`,
-        help: `help | about | skills | projects | certifications | contact | clear | exit`
-      },
-      fr: {
-        about: `## À propos de moi
-
-Bonjour, je suis **Maini Lotfi Abdelkader** ("phantekzy"), Développeur Web Full-Stack à Alger. Je crée des applications web évolutives et maintenables avec JavaScript moderne (Node.js, React), PHP et MySQL. Passionné par le code propre, les interfaces performantes et le design centré utilisateur, j'aime transformer les idées en produits prêts pour la production.`,
-        skills: `- HTML5 ★★★★★
-- CSS3 ★★★★☆
-- JavaScript/ES6 ★★★★☆
-- Node.js ★★★★☆
-- React/Redux ★★★★☆
-- PHP/Laravel ★★★★☆
-- MySQL/PostgreSQL ★★★☆☆
-- Git & CI/CD ★★★★☆`,        
-        projects: `- **Terminal Portfolio** : Portfolio interactif réalisé en JS & marked.js
-- **React Weather App** : Tableau de bord météo réactif récupérant des données live
-- **Formulaire de contact PHP** : Gestionnaire de formulaire sécurisé avec validation serveur`,
-        certifications: `- freeCodeCamp : Responsive Web Design
-- freeCodeCamp : JavaScript Algorithms
-- Microsoft : Azure Fundamentals`,
-        contact: `📨 Email : <a href=\"mailto:mainilotfi@gmail.com\">mainilotfi@gmail.com</a>`,
-        help: `help | about | skills | projects | certifications | contact | clear | exit`
-      },
-      ar: {
-        about: `## عني
-
-مرحباً، أنا **Maini Lotfi Abdelkader** ("phantekzy"), مطور ويب Full-Stack من الجزائر. أبني تطبيقات ويب قابلة للتطوير وسهلة الصيانة باستخدام JavaScript (Node.js, React)، PHP و MySQL. شغوف بكتابة شفرة نظيفة، واجهات سريعة وتجربة مستخدم ممتازة.`,
-        skills: `- HTML5 ★★★★★
-- CSS3 ★★★★☆
-- JavaScript/ES6 ★★★★☆
-- Node.js ★★★★☆
-- React/Redux ★★★★☆
-- PHP/Laravel ★★★★☆
-- MySQL/PostgreSQL ★★★☆☆
-- Git & CI/CD ★★★★☆`,
-        projects: `- **Terminal Portfolio**: محفظة تفاعلية بنيت بـ JS & marked.js
-- **React Weather App**: لوحة طقس متجاوبة تجلب بيانات حية
-- **PHP Contact Form**: نموذج اتصال آمن مع التحقق من الخادم`,
-        certifications: `- freeCodeCamp: Responsive Web Design
-- freeCodeCamp: JavaScript Algorithms
-- Microsoft: Azure Fundamentals`,
-        contact: `📨 البريد: <a href=\"mailto:mainilotfi@gmail.com\">mainilotfi@gmail.com</a>`,
-        help: `help | about | skills | projects | certifications | contact | clear | exit`
-      }
+      en: { about: `## About Me\n\nHi, I'm **Maini Lotfi Abdelkader** ("phantekzy"), a Full-Stack Web Developer based in Algiers. I build scalable, maintainable web applications using modern JavaScript (Node.js, React), PHP, and MySQL. Passionate about clean code, performant UIs, and user-centered design, I thrive on turning ideas into production-ready products.`, skills: `- HTML5 ★★★★★\n- CSS3 ★★★★☆\n- JavaScript/ES6 ★★★★☆\n- Node.js ★★★★☆\n- React/Redux ★★★★☆\n- PHP/Laravel ★★★★☆\n- MySQL/PostgreSQL ★★★☆☆\n- Git & CI/CD ★★★★☆`, projects: `- **Terminal Portfolio**: This interactive portfolio built with vanilla JS & marked.js\n- **React Weather App**: Responsive weather dashboard fetching live API data\n- **PHP Contact Form**: Secure form handler with server-side validation`, certifications: `- freeCodeCamp: Responsive Web Design\n- freeCodeCamp: JavaScript Algorithms\n- Microsoft: Azure Fundamentals`, help: `help | about | skills | projects | certifications | contact | lang | theme | clear | exit`, contact: `📨 Email: <a href=\"mailto:mainilotfi@gmail.com\">mainilotfi@gmail.com</a>` },
+      fr: { about: `## À propos de moi\n\nBonjour, je suis **Maini Lotfi Abdelkader** ("phantekzy"), Développeur Web Full-Stack à Alger. Je crée des applications web évolutives et maintenables avec JavaScript moderne (Node.js, React), PHP et MySQL. Passionné par le code propre, les interfaces performantes et le design centré utilisateur, j'aime transformer les idées en produits prêts pour la production.`, skills: `- HTML5 ★★★★★\n- CSS3 ★★★★☆\n- JavaScript/ES6 ★★★★☆\n- Node.js ★★★★☆\n- React/Redux ★★★★☆\n- PHP/Laravel ★★★★☆\n- MySQL/PostgreSQL ★★★☆☆\n- Git & CI/CD ★★★★☆`, projects: `- **Terminal Portfolio** : Portfolio interactif réalisé en JS & marked.js\n- **React Weather App** : Tableau de bord météo réactif récupérant des données live\n- **Formulaire de contact PHP** : Gestionnaire de formulaire sécurisé avec validation serveur`, certifications: `- freeCodeCamp : Responsive Web Design\n- freeCodeCamp : JavaScript Algorithms\n- Microsoft : Azure Fundamentals`, help: `help | about | skills | projects | certifications | contact | lang | theme | clear | exit`, contact: `📨 Email : <a href=\"mailto:mainilotfi@gmail.com\">mainilotfi@gmail.com</a>` },
+      ar: { about: `## عني\n\nمرحباً، أنا **Maini Lotfi Abdelkader** ("phantekzy"), مطور ويب Full-Stack من الجزائر. أبني تطبيقات ويب قابلة للتطوير وسهلة الصيانة باستخدام JavaScript (Node.js, React)، PHP و MySQL. شغوف بكتابة شفرة نظيفة، واجهات سريعة وتجربة مستخدم ممتازة.`, skills: `- HTML5 ★★★★★\n- CSS3 ★★★★☆\n- JavaScript/ES6 ★★★★☆\n- Node.js ★★★★☆\n- React/Redux ★★★★☆\n- PHP/Laravel ★★★★☆\n- MySQL/PostgreSQL ★★★☆☆\n- Git & CI/CD ★★★★☆`, projects: `- **Terminal Portfolio**: محفظة تفاعلية بنيت بـ JS & marked.js\n- **React Weather App**: لوحة طقس متجاوبة تجلب بيانات حية\n- **PHP Contact Form**: نموذج اتصال آمن مع التحقق من الخادم`, certifications: `- freeCodeCamp: Responsive Web Design\n- freeCodeCamp: JavaScript Algorithms\n- Microsoft: Azure Fundamentals`, help: `help | about | skills | projects | certifications | contact | lang | theme | clear | exit`, contact: `📨 البريد: <a href=\"mailto:mainilotfi@gmail.com\">mainilotfi@gmail.com</a>` }
     };
 
-    let lang = 'en', theme = 'matrix';
-    const splash = document.getElementById('splash');
+    let lang = 'en';
+    let theme = 'matrix';
     const terminal = document.getElementById('terminal');
 
-    // Splash interactions
-    splash.querySelectorAll('[data-lang]').forEach(btn => btn.onclick = e => {
-      lang = e.target.dataset.lang;
-      initDisplay();
-    });
-    splash.querySelectorAll('[data-theme]').forEach(btn => btn.onclick = e => {
-      theme = e.target.dataset.theme;
-      document.body.className = 'theme-' + theme;
-    });
+    // Initial welcome
+    print(`<pre>Welcome to phantekzy.dev<br>Type <code>help</code> to see available commands.</pre>`);
+    newPrompt();
 
-    function initDisplay(){
-      splash.hidden = true;
-      terminal.hidden = false;
-      print(`<pre>Welcome to phantekzy.dev — type <code>help</code> to begin.</pre>`);
-      newPrompt();
-    }
-
-    const cmds = {
-      help(){ print(translations[lang].help); },
-      about(){ print(marked.parse(translations[lang].about)); },
-      skills(){ print(marked.parse(translations[lang].skills)); },
-      projects(){ print(marked.parse(translations[lang].projects)); },
-      certifications(){ print(marked.parse(translations[lang].certifications)); },
-      contact(){ print(translations[lang].contact); },
-      clear(){ terminal.innerHTML=''; },
-      exit(){ print('Goodbye!'); }
+    // Command definitions
+    const commands = {
+      help() { print(translations[lang].help); },
+      about() { print(marked.parse(translations[lang].about)); },
+      skills() { print(marked.parse(translations[lang].skills)); },
+      projects() { print(marked.parse(translations[lang].projects)); },
+      certifications() { print(marked.parse(translations[lang].certifications)); },
+      contact() { print(translations[lang].contact); },
+      lang(args) {
+        if(args[1] && translations[args[1]]) { lang = args[1]; print(`Language set to ${args[1]}`);} 
+        else { print('Usage: lang [en|fr|ar]'); }
+      },
+      theme(args) {
+        if(args[1] && ['matrix','ubuntu','light'].includes(args[1])) { theme = args[1]; document.body.className = 'theme-' + theme; print(`Theme set to ${args[1]}`);} 
+        else { print('Usage: theme [matrix|ubuntu|light]'); }
+      },
+      clear() { terminal.innerHTML = ''; },
+      exit() { print('Goodbye!'); }
     };
 
-    function print(html=''){ const div=document.createElement('div'); div.innerHTML=html; terminal.appendChild(div); terminal.scrollTop=terminal.scrollHeight; }
-    function newPrompt(){ const line=document.createElement('div'); line.className='line'; const prompt=document.createElement('span'); prompt.className='prompt'; prompt.textContent='[phantekzy@portfolio ~]$ '; const input=document.createElement('input'); input.id='cmdline'; input.autocomplete='off'; input.disabled=false; line.append(prompt,input); terminal.append(line); input.focus(); input.addEventListener('keydown', e=>{
-        if(e.key==='Enter'){ const cmd=input.value.trim(); input.disabled=true; execute(cmd);}        
+    function print(html='') {
+      const div = document.createElement('div');
+      div.innerHTML = html;
+      terminal.appendChild(div);
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    function newPrompt() {
+      const line = document.createElement('div'); line.className='line';
+      const prompt = document.createElement('span'); prompt.className='prompt'; prompt.textContent='[phantekzy@portfolio ~]$ ';
+      const input = document.createElement('input'); input.id='cmdline'; input.autocomplete='off'; input.spellcheck=false;
+      line.append(prompt, input); terminal.append(line);
+      input.focus();
+      input.addEventListener('keydown', e => {
+        if(e.key === 'Enter') {
+          const raw = input.value.trim();
+          const parts = raw.split(' ');
+          input.disabled = true;
+          if(parts[0]) {
+            if(commands[parts[0]]) commands[parts[0]](parts);
+            else print(`command not found: ${parts[0]}`);
+          }
+          if(parts[0] !== 'exit') newPrompt();
+        }
       });
     }
-    function execute(input){ if(!input) return newPrompt(); const parts=input.split(' '), c=parts[0]; if(cmds[c]) cmds[c](); else print(`command not found: ${c}`); if(c!=='exit') newPrompt(); }
-
   </script>
 </body>
 </html>
