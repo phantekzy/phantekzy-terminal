@@ -4,90 +4,87 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>phantekzy | Advanced Terminal Portfolio</title>
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/winbox/dist/js/winbox.bundle.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/winbox/dist/css/winbox.min.css" rel="stylesheet">
   <style>
-    :root { --bg: #000; --text: #33ff33; --accent: #ff66cc; }
-    .theme-ubuntu { --bg: #300a24; --text: #ff6600; --accent: #ffffff; }
-    .theme-matrix { --bg: #001100; --text: #00ff00; --accent: #00ff00; }
+    :root {
+      --bg: #000;
+      --text: #33ff33;
+    }
+    .theme-ubuntu { --bg: #300a24; --text: #ff6600; }
+    .theme-matrix { --bg: #001100; --text: #00ff00; }
     body { margin:0; height:100vh; background:var(--bg); color:var(--text); font-family:'Fira Code', monospace; }
     #terminal { box-sizing:border-box; padding:20px; height:100%; overflow-y:auto; }
-    .line { display:flex; align-items:flex-start; }
-    .prompt { flex-shrink:0; margin-right:5px; }
+    .line { display:flex; }
+    .prompt { flex-shrink:0; }
     #cmdline { background:transparent; border:none; outline:none; color:inherit; flex:1; font:inherit; }
     .cursor { width:8px; background:var(--text); animation:blink .8s steps(1) infinite; }
     @keyframes blink {50%{opacity:0}}
-    a { color:var(--accent); text-decoration:underline; }
-    pre { margin:0; }
-    /* Responsive */
-    @media (max-width: 600px) {
-      #terminal { padding:10px; font-size:0.9em; }
-    }
+    a { color:var(--text); text-decoration:underline; }
   </style>
 </head>
 <body class="theme-matrix">
   <div id="terminal"></div>
   <script>
-    // PWA: register service worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(console.error);
-    }
     const terminal = document.getElementById('terminal');
     const themes = ['matrix','ubuntu'];
     let history = [], histIdx = 0;
     const data = {
-      about: '# About Me\nSelf-taught developer transitioning into CyberSec. Passionate about Linux, open-source, and continuous learning.',
-      skills: '- HTML5\n- CSS3 (Flexbox, Grid)\n- JavaScript (ES6+)\n- PHP, Node.js\n- React & Redux\n- MySQL, MongoDB\n- Docker & Kubernetes\n- Linux (Debian, Arch)\n- Bash, Zsh & Oh-My-Zsh\n- Git & CI/CD (GitHub Actions)',
-      projects: `- **Terminal Portfolio**: Interactive PWA portfolio hosted on GitHub Pages\n- **CyberSec Tools**: Bash & Python scripts for pentesting\n- **React Weather App**: PWA-enabled live forecast app\n- **GUI Mode**: WinBox.js windows for project details`,
-      certifications: '- freeCodeCamp: Responsive Web Design\n- freeCodeCamp: JS Algorithms & Data Structures\n- IBM Cybersecurity Analyst (In Progress)',
-      experience: '- Freelance web dev (HTML/CSS, JS)\n- Volunteer: Open-source contributions (Linux docs)\n- CTF competitor: Solving security challenges',
-      goals: '1. Master Fullstack & Microservices\n2. Specialize in Pentesting & Forensics\n3. Learn German to B2 level\n4. Secure a remote role\n5. Publish open-source security tools'
+      about: '## About Me\nSelf-taught developer transitioning into CyberSec. Passionate about Linux and open source.',
+      skills: '- HTML5\n- CSS3\n- JavaScript\n- PHP\n- Node.js\n- React\n- MySQL\n- Linux\n- Bash\n- Git',
+      projects: '- **Terminal Portfolio**: This site!\n- **CyberSec Tools**: Collection of pentesting scripts\n- **React Weather App**: Live forecast app',
+      certifications: '- freeCodeCamp: Responsive Web Design\n- freeCodeCamp: JS Algorithms\n- IBM Cybersecurity Analyst (In Progress)',
+      goals: '1. Master Fullstack\n2. Specialize in CyberSec\n3. Learn German\n4. Get remote job\n5. Move to Europe'
     };
-    function print(html=''){ const div=document.createElement('div'); div.innerHTML=html; terminal.appendChild(div); terminal.scrollTop=terminal.scrollHeight; }
+    function print(html=''){
+      const div = document.createElement('div'); div.innerHTML = html; terminal.appendChild(div);
+      terminal.scrollTop = terminal.scrollHeight;
+    }
     function newPrompt(){
-      const line=document.createElement('div'); line.className='line';
-      const prompt=document.createElement('span'); prompt.className='prompt'; prompt.textContent='[phantekzy@portfolio ~]$ ';
-      const input=document.createElement('input'); input.id='cmdline'; input.autocomplete='off';
-      line.append(prompt,input); terminal.append(line); input.focus(); addListeners(input);
+      const line = document.createElement('div'); line.className='line';
+      const prompt = document.createElement('span'); prompt.className='prompt'; prompt.textContent='[phantekzy@portfolio ~]$ ';
+      const input = document.createElement('input'); input.id='cmdline'; input.autocomplete='off';
+      line.append(prompt,input); terminal.append(line);
+      input.focus(); addListeners(input);
     }
     function addListeners(input){
       input.addEventListener('keydown', e=>{
-        if(e.key==='Enter'){ const cmd=input.value.trim(); history.push(cmd); histIdx=history.length; input.disabled=true; execute(cmd);} 
-        else if(e.key==='ArrowUp'){ if(histIdx>0){ histIdx--; input.value=history[histIdx]; }}
+        if(e.key==='Enter'){
+          const cmd = input.value.trim(); history.push(cmd); histIdx=history.length;
+          input.disabled=true; execute(cmd);
+        } else if(e.key==='ArrowUp'){ if(histIdx>0){ histIdx--; input.value=history[histIdx]; }}
         else if(e.key==='ArrowDown'){ if(histIdx<history.length-1){ histIdx++; input.value=history[histIdx]; } else input.value=''; }
         else if(e.key==='Tab'){ e.preventDefault(); autocomplete(input); }
       });
     }
-    function autocomplete(input){ const cmds=Object.keys(commands); const val=input.value; const matches=cmds.filter(c=>c.startsWith(val)); if(matches.length===1) input.value=matches[0]+' '; }
-    function openWindow(title, markdown){ new WinBox({ title, x:'center', y:'center', width:'70%', height:'60%', html: `<div style="padding:10px; color:#fff; font-family:'Fira Code';">${marked.parse(markdown)}</div>` }); }
+    function autocomplete(input){
+      const cmds = Object.keys(commands);
+      const val = input.value; const matches = cmds.filter(c=>c.startsWith(val));
+      if(matches.length===1) input.value=matches[0]+' ';
+    }
     const commands = {
-      help(){ print('Commands: '+Object.keys(commands).join(' | ')); },
-      about(){ openWindow('About Me', data.about); },
-      skills(){ openWindow('Skills', data.skills); },
-      projects(){ openWindow('Projects', data.projects); },
-      certifications(){ openWindow('Certifications', data.certifications); },
-      experience(){ openWindow('Experience', data.experience); },
-      goals(){ openWindow('Goals', data.goals); },
+      help(){ print(Object.keys(commands).join(' | ')); },
+      about(){ print(marked.parse(data.about)); },
+      skills(){ print(marked.parse(data.skills)); },
+      projects(){ print(marked.parse(data.projects)); },
+      certifications(){ print(marked.parse(data.certifications)); },
+      goals(){ print(marked.parse(data.goals)); },
       clear(){ terminal.innerHTML=''; },
-      theme(args){ const t=args[1]; if(themes.includes(t)){ document.body.className='theme-'+t; print('Theme set to '+t); } else print('Unknown theme: '+t); },
-      resume(){ print('<a href="resume.pdf" download>⬇ Download Resume</a>'); },
+      theme(args){ const t=args[1]; if(themes.includes(t)){ document.body.className='theme-'+t; print('Theme set to '+t); } else print('Unknown theme'); },
+      resume(){ print('<a href="resume.pdf" download>Download Resume</a>'); },
       contact(){ print('Email: <a href="mailto:mainilotfi@gmail.com">mainilotfi@gmail.com</a>'); },
-      socials(){ print('<a href="https://github.com/phantekzy" target="_blank">GitHub</a> | <a href="https://linkedin.com/in/maini-lotfi" target="_blank">LinkedIn</a> | <a href="https://x.com/mainilotfi" target="_blank">X</a>'); },
-      gui(args){ if(args[1]==='projects') commands.projects(); else print('Usage: gui projects'); },
-      install_pwa(){ print('To install PWA: open browser menu and select "Install app".'); },
+      socials(){ print('GitHub | LinkedIn | X | YouTube'); },
       exit(){ print('Goodbye!'); }
     };
-    // Boot sequence
-    print('<pre style="color:var(--accent);">   ____  _                 _           _ _   _ _             
-  |  _ \| | ___   ___   __| | ___  ___(_) |_(_) |_ ___  _ __ 
-  | |_) | |/ _ \ / _ \ / _` |/ _ \/ __| | __| | __/ _ \| '__|
-  |  __/| | (_) | (_) | (_| |  __/\__ \ | |_| | || (_) | |   
-  |_|   |_|\___/ \___/ \__,_|\___||___/_|\__|_|\__\___/|_|   
-</pre><div>Type <code>help</code> to get started.</div>');
+    function execute(input){
+      if(!input) return newPrompt();
+      const args = input.split(' '), cmd=args[0];
+      if(commands[cmd]) commands[cmd](args);
+      else print(`command not found: ${cmd}`);
+      if(cmd!=='exit') newPrompt();
+    }
+    // Start
+    print('<pre>Welcome to phantekzy\'s terminal portfolio. Type <code>help</code> to get started.</pre>');
     newPrompt();
   </script>
 </body>
